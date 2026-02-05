@@ -3,55 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة الإدارة | Admin Dashboard</title>
+    <title>لوحة تحكم FULL MARK</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --primary: #4361ee;       /* أزرق زاهي */
-            --primary-light: #4895ef;
-            --secondary: #3f37c9;
-            --bg-body: #f8f9fa;       /* خلفية فاتحة */
-            --text-dark: #2b2d42;
-            --text-gray: #8d99ae;
-            --white: #ffffff;
-            --success: #4cc9f0;
+            /* === ألوان الوضع الداكن (Dark Mode) === */
+            --bg-body: #0f1115;       /* خلفية سوداء هادئة */
+            --card-bg: #181b21;       /* لون الكروت غامق */
+            --primary: #4361ee;       /* اللون الأزرق المميز */
+            --text-main: #ffffff;     /* النص الأبيض */
+            --text-muted: #a0a0a0;    /* النص الرمادي */
+            --border-color: #2a2e35;  /* لون الحدود */
+            --success: #00b894;       /* أخضر للنجاح */
+            --warning: #fdcb6e;       /* برتقالي للانتظار */
         }
 
         body {
             background-color: var(--bg-body);
-            color: var(--text-dark);
-            font-family: 'Cairo', sans-serif; /* الخط الجديد */
+            color: var(--text-main);
+            font-family: 'Cairo', sans-serif;
             padding-bottom: 50px;
         }
 
         /* === الهيدر (العنوان) === */
         .page-header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 30px 20px;
-            border-radius: 0 0 20px 20px;
+            background: linear-gradient(135deg, #1e2a4a, #10141d);
+            padding: 40px 20px;
+            border-bottom: 1px solid var(--border-color);
             margin-bottom: 40px;
-            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--success));
         }
 
-        /* === كروت الإحصائيات === */
+        .header-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        /* === كروت الإحصائيات (العدادات) === */
         .stat-card {
-            background: var(--white);
-            border: none;
-            border-radius: 15px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
             padding: 25px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: transform 0.3s ease;
-            height: 100%;
+            position: relative;
+            overflow: hidden;
         }
-        .stat-card:hover { transform: translateY(-5px); }
-        
+        .stat-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+
+        /* خط ملون تحت الكارت */
+        .stat-card.replied { border-bottom: 4px solid var(--success); }
+        .stat-card.pending { border-bottom: 4px solid var(--warning); }
+
         .stat-icon {
             width: 60px;
             height: 60px;
@@ -59,67 +80,57 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
+            background: rgba(255, 255, 255, 0.05);
         }
-        .icon-blue { background: rgba(67, 97, 238, 0.1); color: var(--primary); }
-        .icon-green { background: rgba(76, 201, 240, 0.1); color: var(--success); }
 
-        .stat-info h3 { font-weight: 700; margin: 0; font-size: 2rem; }
-        .stat-info p { color: var(--text-gray); margin: 0; font-size: 0.9rem; }
+        .stat-info h3 { font-weight: 700; margin: 0; font-size: 2.5rem; }
+        .stat-info p { color: var(--text-muted); margin: 0; font-size: 0.9rem; margin-top: 5px; }
 
-        /* === كروت الرسائل (Tickets) === */
+        /* === كروت الرسائل === */
         .ticket-card {
-            background: var(--white);
-            border-radius: 16px;
-            border: none;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
             margin-bottom: 25px;
-            overflow: hidden;
             transition: all 0.3s ease;
             position: relative;
-            border: 1px solid #edf2f4;
         }
         
         .ticket-card:hover {
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            border-color: var(--primary-light);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-color: var(--primary);
         }
 
         .ticket-header {
             padding: 15px 20px;
-            border-bottom: 1px solid #edf2f4;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #fafbfc;
+            background: rgba(255,255,255,0.02);
+            color: var(--text-muted);
+            font-size: 0.85rem;
         }
-        .ticket-id { 
-            font-weight: bold; 
-            color: var(--primary); 
-            background: rgba(67, 97, 238, 0.1);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
-        .ticket-date { font-size: 0.8rem; color: var(--text-gray); }
 
         .ticket-body { padding: 20px; }
 
         .ticket-subject {
             font-size: 1.1rem;
             font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 10px;
+            color: var(--primary); /* لون العنوان أزرق */
+            margin-bottom: 12px;
             display: block;
         }
 
         .ticket-msg {
-            color: #6c757d;
+            color: #d1d5db;
             font-size: 0.95rem;
             line-height: 1.6;
-            background: #f8f9fa;
+            background: rgba(0,0,0,0.3);
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
             margin-bottom: 15px;
         }
 
@@ -127,79 +138,80 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: white;
-            border: 1px solid #e9ecef;
-            padding: 5px 12px;
+            background: rgba(255,255,255,0.05);
+            padding: 6px 14px;
             border-radius: 30px;
             font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-dark);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
         }
-        .student-chip i { color: var(--secondary); }
+        .student-chip i { color: var(--text-main); }
 
         /* زرار الرد */
         .btn-action {
             width: 100%;
             padding: 12px;
-            background: white;
-            color: var(--primary);
+            background: var(--primary);
+            color: white;
             border: none;
-            border-top: 1px solid #edf2f4;
+            border-radius: 0 0 12px 12px;
             font-weight: 700;
             transition: 0.3s;
         }
-        .btn-action:hover {
-            background: var(--primary);
-            color: white;
-        }
+        .btn-action:hover { background: #304ffe; }
 
-        /* Loading */
-        .loader { color: var(--primary); font-size: 1.2rem; }
+        /* Loader */
+        .spinner-container { text-align: center; padding: 50px; color: var(--primary); }
     </style>
 </head>
 <body>
 
 <div class="page-header text-center">
-    <h2 class="fw-bold mb-0"><i class="fas fa-headset me-2"></i> لوحة إدارة الدعم الفني</h2>
-    <p class="opacity-75 mt-2">متابعة طلبات الطلاب بشكل حي ومباشر</p>
+    <h2 class="header-title">
+        <i class="fas fa-headset me-2"></i> لوحة إدارة الدعم الفني
+    </h2>
+    <h4 class="text-white-50 mt-2" style="font-weight: 400;">لمنصة FULL MARK 🎓</h4>
 </div>
 
 <div class="container">
     
     <div class="row g-4 mb-5">
-        <div class="col-md-6 col-lg-4">
-            <div class="stat-card">
+        <div class="col-md-6">
+            <div class="stat-card pending">
                 <div class="stat-info">
-                    <h3 id="total-count">0</h3>
-                    <p>إجمالي الرسائل</p>
+                    <h3 id="pending-count" class="text-warning">0</h3>
+                    <p>رسائل بانتظار الرد (جديد)</p>
                 </div>
-                <div class="stat-icon icon-blue">
-                    <i class="fas fa-envelope-open-text"></i>
+                <div class="stat-icon" style="color: var(--warning);">
+                    <i class="fas fa-clock"></i>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="stat-card">
+        
+        <div class="col-md-6">
+            <div class="stat-card replied">
                 <div class="stat-info">
-                    <h3 class="text-success">Live</h3>
-                    <p>حالة النظام</p>
+                    <h3 id="replied-count" class="text-success">0</h3>
+                    <p>رسائل تم الرد عليها</p>
                 </div>
-                <div class="stat-icon icon-green">
-                    <i class="fas fa-wifi"></i>
+                <div class="stat-icon" style="color: var(--success);">
+                    <i class="fas fa-check-circle"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="d-flex align-items-center justify-content-between mb-4">
-        <h4 class="fw-bold text-dark m-0">📥 أحدث الرسائل الواردة</h4>
-        <span class="badge bg-primary rounded-pill px-3 py-2">Real-time</span>
+    <div class="d-flex align-items-center justify-content-between mb-4 border-bottom border-secondary pb-3">
+        <h4 class="fw-bold text-white m-0">
+            <i class="fas fa-inbox me-2" style="color: var(--primary)"></i> أحدث الرسائل الواردة
+        </h4>
+        <span class="badge bg-danger rounded-pill px-3 py-2">Real-time</span>
     </div>
 
     <div class="row" id="tickets-container">
-        <div class="col-12 text-center py-5">
-            <div class="spinner-border text-primary" role="status"></div>
-            <p class="mt-2 text-muted fw-bold">جاري تحميل البيانات...</p>
+        <div class="spinner-container">
+            <div class="spinner-border" role="status"></div>
+            <p class="mt-3">جاري الاتصال بقاعدة بيانات FULL MARK...</p>
         </div>
     </div>
 
@@ -207,9 +219,9 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, onSnapshot, query, orderBy, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // إعدادات مشروعك
+    // إعدادات الفايربيز بتاعتك
     const firebaseConfig = {
       apiKey: "AIzaSyDH3cy-jkDphnPGzHUwd4rd9ogZDY7uUgM",
       authDomain: "quest-full.firebaseapp.com",
@@ -224,41 +236,67 @@
     const db = getFirestore(app);
 
     const ticketsContainer = document.getElementById('tickets-container');
-    const totalCountEl = document.getElementById('total-count');
+    const pendingCountEl = document.getElementById('pending-count');
+    const repliedCountEl = document.getElementById('replied-count');
 
+    // بنجيب الرسائل مرتبة بالأحدث
     const q = query(collection(db, "tickets"), orderBy("createdAt", "desc"));
 
     onSnapshot(q, (snapshot) => {
-        ticketsContainer.innerHTML = ''; 
-        totalCountEl.innerText = snapshot.size;
+        ticketsContainer.innerHTML = '';
+        
+        let pending = 0;
+        let replied = 0;
 
         if (snapshot.empty) {
             ticketsContainer.innerHTML = `
-                <div class="col-12 text-center">
-                    <img src="https://cdn-icons-png.flaticon.com/512/4076/4076432.png" width="150" class="mb-3 opacity-50">
+                <div class="col-12 text-center py-5">
+                    <i class="fas fa-check-double fa-4x mb-3 text-muted" style="opacity: 0.3"></i>
                     <h5 class="text-muted">لا توجد رسائل جديدة، كل شيء تمام! 🎉</h5>
                 </div>
             `;
+            // تصفير العدادات
+            pendingCountEl.innerText = 0;
+            repliedCountEl.innerText = 0;
             return;
         }
 
-        snapshot.forEach((doc) => {
-            const ticket = doc.data();
-            const ticketId = doc.id;
+        snapshot.forEach((docSnap) => {
+            const ticket = docSnap.data();
+            const ticketId = docSnap.id;
             
+            // حساب العدادات بناءً على حالة الرسالة
+            // (هنفترض ان لو مفيش حالة مكتوبة تبقى pending)
+            if (ticket.status === 'completed' || ticket.status === 'replied') {
+                replied++;
+            } else {
+                pending++;
+            }
+
+            // تنسيق التاريخ
             let dateString = "الآن";
             if (ticket.createdAt) {
                 const date = new Date(ticket.createdAt.seconds * 1000);
-                dateString = date.toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'}) + ' - ' + date.toLocaleDateString('ar-EG');
+                dateString = date.toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'}) + ' ' + date.toLocaleDateString('ar-EG');
             }
 
-            // HTML الكارت الجديد (Clean Design)
+            // عرض الرسائل (بنظهر بس الرسائل اللي لسه متردش عليها عشان الزحمة)
+            // لو عايز تظهر كله شيل الشرط ده (if)
+            const isCompleted = ticket.status === 'completed' || ticket.status === 'replied';
+            
+            // ستايل مختلف لو تم الرد
+            const cardOpacity = isCompleted ? 'opacity: 0.6;' : '';
+            const statusBadge = isCompleted ? '<span class="badge bg-success ms-2">تم الرد</span>' : '<span class="badge bg-warning text-dark ms-2">جديد</span>';
+
             const html = `
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-4 col-md-6" style="${cardOpacity}">
                     <div class="ticket-card">
                         <div class="ticket-header">
-                            <span class="ticket-id">#${ticketId.slice(0, 5)}</span>
-                            <span class="ticket-date"><i class="far fa-clock me-1"></i> ${dateString}</span>
+                            <div>
+                                <span style="font-family: monospace; color: var(--primary)">#${ticketId.slice(0, 5)}</span>
+                                ${statusBadge}
+                            </div>
+                            <span><i class="far fa-clock me-1"></i> ${dateString}</span>
                         </div>
                         
                         <div class="ticket-body">
@@ -269,26 +307,55 @@
                             
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <div class="student-chip">
-                                    <i class="fas fa-user-circle fa-lg"></i>
+                                    <i class="fas fa-user"></i>
                                     ${ticket.studentName || 'طالب'}
                                 </div>
-                                <div class="student-chip" style="background: #f8f9fa;">
+                                <div class="student-chip">
                                     <i class="fas fa-code"></i>
                                     ${ticket.studentCode || '---'}
                                 </div>
                             </div>
                         </div>
 
-                        <button class="btn-action" onclick="alert('جاري الرد على: ${ticket.studentName}')">
+                        ${!isCompleted ? `
+                        <button class="btn-action" onclick="markAsReplied('${ticketId}')">
                             رد على الرسالة <i class="fas fa-paper-plane ms-2"></i>
                         </button>
+                        ` : `
+                        <button class="btn-action" style="background: #2a2e35; cursor: default;">
+                             <i class="fas fa-check me-2"></i> تم الرد مسبقاً
+                        </button>
+                        `}
                     </div>
                 </div>
             `;
 
             ticketsContainer.innerHTML += html;
         });
+
+        // تحديث الأرقام في الكروت
+        pendingCountEl.innerText = pending;
+        repliedCountEl.innerText = replied;
     });
+
+    // دالة لتغيير حالة الرسالة عند الضغط على زر الرد (اختياري)
+    window.markAsReplied = async (id) => {
+        const reply = prompt("اكتب ردك هنا (سيتم حفظ الحالة كـ 'تم الرد'):");
+        if (reply) {
+            try {
+                const ticketRef = doc(db, "tickets", id);
+                await updateDoc(ticketRef, {
+                    status: 'replied',
+                    adminReply: reply,
+                    repliedAt: new Date()
+                });
+                alert("تم إرسال الرد وتحديث الحالة بنجاح! ✅");
+            } catch (error) {
+                console.error("Error updating document: ", error);
+                alert("حدث خطأ أثناء التحديث");
+            }
+        }
+    }
 </script>
 
 </body>
