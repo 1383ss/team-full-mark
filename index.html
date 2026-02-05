@@ -10,15 +10,19 @@
 
     <style>
         :root {
-            --bg-body: #0f1115;
-            --card-bg: #181b21;
-            --primary: #4361ee;
-            --text-main: #ffffff;
-            --text-muted: #a0a0a0;
-            --border-color: #2a2e35;
-            --success: #00b894;
-            --warning: #fdcb6e;
-            --danger: #ff4757;
+            /* === ألوان عالية التباين (High Contrast) === */
+            --bg-body: #121212;       /* أسود مطفي */
+            --card-bg: #1e1e24;       /* لون الكروت أفتح قليلاً */
+            --primary: #4cc9f0;       /* أزرق سماوي مضيء */
+            --text-main: #ffffff;     /* أبيض صريح */
+            --text-secondary: #e0e0e0; /* رمادي فاتح جداً */
+            --text-muted: #b0b3b8;    /* رمادي فضي (واضح) */
+            --border-color: #333333;
+            
+            /* ألوان العدادات (Neon Style) */
+            --success: #00e676;       
+            --warning: #ffea00;       
+            --danger: #ff1744;        
         }
 
         body {
@@ -28,45 +32,60 @@
             padding-bottom: 50px;
         }
 
-        /* === الهيدر وشريط البحث === */
+        /* === الهيدر === */
         .page-header {
-            background: linear-gradient(135deg, #1e2a4a, #10141d);
+            background: linear-gradient(to right, #1a1a1a, #2c2c2c);
             padding: 25px 20px;
             border-bottom: 1px solid var(--border-color);
             margin-bottom: 30px;
-            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
         .search-box {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid var(--border-color);
+            background: #333;
+            border: 1px solid #555;
             border-radius: 30px;
-            padding: 10px 20px;
+            padding: 12px 25px;
             color: white;
             width: 100%;
             max-width: 400px;
-            transition: 0.3s;
+            font-size: 1rem;
         }
+        .search-box::placeholder { color: #aaa; }
         .search-box:focus {
-            background: rgba(255,255,255,0.15);
+            background: #444;
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(67, 97, 238, 0.3);
+            box-shadow: 0 0 10px rgba(76, 201, 240, 0.4);
         }
 
-        /* === الكروت === */
+        /* === الكروت (Stat Cards) === */
         .stat-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 15px;
+            padding: 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
-        .stat-card.pending { border-bottom: 3px solid var(--warning); }
-        .stat-card.replied { border-bottom: 3px solid var(--success); }
-        .stat-card.danger { border-bottom: 3px solid var(--danger); }
+        .stat-card.pending { border-bottom: 4px solid var(--warning); }
+        .stat-card.replied { border-bottom: 4px solid var(--success); }
+        .stat-card.danger { border-bottom: 4px solid var(--danger); }
+
+        /* نصوص العدادات (تعديل الوضوح) */
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--text-secondary); /* لون فاتح */
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1;
+        }
 
         /* === بطاقة الرسالة === */
         .ticket-card {
@@ -74,68 +93,78 @@
             border-radius: 12px;
             border: 1px solid var(--border-color);
             margin-bottom: 20px;
-            transition: all 0.3s ease;
             position: relative;
         }
         
         .ticket-header {
-            padding: 10px 15px;
+            padding: 12px 15px;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.85rem;
-            background: rgba(255,255,255,0.02);
+            font-size: 0.9rem;
+            background: rgba(255,255,255,0.03);
+            color: var(--text-muted);
         }
 
-        .ticket-body { padding: 15px; }
+        .ticket-body { padding: 18px; }
 
         .ticket-subject {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: var(--primary);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             display: block;
         }
 
         .ticket-msg {
-            color: #d1d5db;
-            font-size: 0.9rem;
-            background: rgba(0,0,0,0.3);
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 12px;
+            color: #eeeeee; /* أبيض تقريباً */
+            font-size: 1rem;
+            background: rgba(0,0,0,0.4);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            margin-bottom: 15px;
+            line-height: 1.6;
         }
 
         .btn-action {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background: var(--primary);
-            color: white;
+            color: #000; /* نص أسود على زرار فاتح للتباين */
             border: none;
             border-radius: 0 0 12px 12px;
-            font-weight: 700;
+            font-weight: 800;
             transition: 0.3s;
         }
-        .btn-action:hover { background: #304ffe; }
+        .btn-action:hover { background: #3db8df; }
 
         /* Timer Styles */
-        .time-badge { font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
-        .time-safe { background: rgba(0, 184, 148, 0.15); color: var(--success); }
-        .time-warning { background: rgba(253, 203, 110, 0.15); color: var(--warning); }
+        .time-badge { font-size: 0.8rem; padding: 4px 10px; border-radius: 6px; font-weight: bold; }
+        .time-safe { background: rgba(0, 230, 118, 0.2); color: var(--success); border: 1px solid var(--success); }
+        .time-warning { background: rgba(255, 234, 0, 0.2); color: var(--warning); border: 1px solid var(--warning); }
         .time-danger { 
-            background: rgba(255, 71, 87, 0.2); 
+            background: rgba(255, 23, 68, 0.2); 
             color: var(--danger); 
-            animation: pulse-red 2s infinite; 
+            border: 1px solid var(--danger);
+            animation: pulse-red 1.5s infinite; 
         }
-        .card-danger { border-color: var(--danger) !important; }
+        .card-danger { border-color: var(--danger) !important; box-shadow: 0 0 15px rgba(255, 23, 68, 0.3); }
 
         @keyframes pulse-red {
-            0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 71, 87, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(255, 23, 68, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 23, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 23, 68, 0); }
         }
+        
+        /* رسالة لا توجد بيانات */
+        .empty-state {
+            color: #fff;
+            opacity: 0.8;
+            padding: 50px 0;
+        }
+        .empty-state h5 { margin-top: 15px; font-weight: bold; color: #aaa; }
     </style>
 </head>
 <body>
@@ -145,11 +174,11 @@
 <div class="page-header">
     <div class="container d-flex flex-wrap justify-content-between align-items-center gap-3">
         <div>
-            <h3 class="text-white fw-bold m-0"><i class="fas fa-headset me-2"></i> FULL MARK</h3>
-            <span class="text-white-50" style="font-size: 0.8rem;">لوحة التحكم المركزية</span>
+            <h3 class="text-white fw-bold m-0"><i class="fas fa-satellite-dish me-2 text-info"></i> FULL MARK</h3>
+            <span style="color: #bbb; font-size: 0.9rem;">غرفة العمليات المركزية</span>
         </div>
         
-        <input type="text" id="search-input" class="search-box" placeholder="بحث بكود الطالب أو الاسم... 🔍">
+        <input type="text" id="search-input" class="search-box" placeholder="🔎 ابحث باسم الطالب أو الكود...">
     </div>
 </div>
 
@@ -159,36 +188,36 @@
         <div class="col-md-4">
             <div class="stat-card pending">
                 <div>
-                    <h3 id="pending-count" class="text-warning">0</h3>
-                    <p class="m-0 text-muted" style="font-size:0.8rem">قيد الانتظار</p>
+                    <div id="pending-count" class="stat-number" style="color: var(--warning)">0</div>
+                    <div class="stat-label">قيد الانتظار</div>
                 </div>
-                <i class="fas fa-clock fa-2x text-warning opacity-25"></i>
+                <i class="fas fa-clock fa-2x" style="color: var(--warning); opacity: 0.8"></i>
             </div>
         </div>
         <div class="col-md-4">
             <div class="stat-card danger">
                 <div>
-                    <h3 id="overdue-count" class="text-danger">0</h3>
-                    <p class="m-0 text-muted" style="font-size:0.8rem">متأخر جداً</p>
+                    <div id="overdue-count" class="stat-number" style="color: var(--danger)">0</div>
+                    <div class="stat-label">متأخر جداً (خطر)</div>
                 </div>
-                <i class="fas fa-fire fa-2x text-danger opacity-25"></i>
+                <i class="fas fa-fire fa-2x" style="color: var(--danger); opacity: 0.8"></i>
             </div>
         </div>
         <div class="col-md-4">
             <div class="stat-card replied">
                 <div>
-                    <h3 id="replied-count" class="text-success">0</h3>
-                    <p class="m-0 text-muted" style="font-size:0.8rem">تم الرد</p>
+                    <div id="replied-count" class="stat-number" style="color: var(--success)">0</div>
+                    <div class="stat-label">تم الرد</div>
                 </div>
-                <i class="fas fa-check-circle fa-2x text-success opacity-25"></i>
+                <i class="fas fa-check-circle fa-2x" style="color: var(--success); opacity: 0.8"></i>
             </div>
         </div>
     </div>
 
     <div id="tickets-container" class="row">
-        <div class="text-center text-muted py-5">
-            <div class="spinner-border text-primary" role="status"></div>
-            <p class="mt-2">جاري التحميل...</p>
+        <div class="text-center text-white py-5">
+            <div class="spinner-border text-info" role="status"></div>
+            <p class="mt-3 fw-bold">جاري تحميل البيانات...</p>
         </div>
     </div>
 </div>
@@ -210,12 +239,12 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const notificationSound = document.getElementById('notification-sound');
-    let isFirstLoad = true; // عشان ميضربش صوت اول ما تفتح الصفحة
+    let isFirstLoad = true; 
 
     const ticketsContainer = document.getElementById('tickets-container');
     const searchInput = document.getElementById('search-input');
 
-    // دالة البحث (Search Logic)
+    // دالة البحث
     searchInput.addEventListener('keyup', (e) => {
         const term = e.target.value.toLowerCase();
         const cards = document.querySelectorAll('.ticket-col');
@@ -233,12 +262,10 @@
     const q = query(collection(db, "tickets"), orderBy("createdAt", "desc"));
 
     onSnapshot(q, (snapshot) => {
-        // تشغيل الصوت لو فيه رسالة جديدة (مش في أول تحميل)
         if (!isFirstLoad) {
             snapshot.docChanges().forEach((change) => {
                 if (change.type === "added") {
-                    // تشغيل الصوت
-                    notificationSound.play().catch(e => console.log("Sound blocked by browser"));
+                    notificationSound.play().catch(e => console.log("Sound interaction needed"));
                 }
             });
         }
@@ -248,7 +275,15 @@
         let pending = 0, replied = 0, overdue = 0;
 
         if (snapshot.empty) {
-            ticketsContainer.innerHTML = `<div class="col-12 text-center text-muted py-5">لا توجد رسائل حالياً</div>`;
+            ticketsContainer.innerHTML = `
+                <div class="col-12 text-center empty-state">
+                    <i class="fas fa-inbox fa-4x mb-3" style="color: #444;"></i>
+                    <h5>لا توجد رسائل حالياً، اللوحة نظيفة! ✨</h5>
+                </div>`;
+            // تصفير العدادات
+            document.getElementById('pending-count').innerText = 0;
+            document.getElementById('replied-count').innerText = 0;
+            document.getElementById('overdue-count').innerText = 0;
             return;
         }
 
@@ -257,7 +292,7 @@
             const ticketId = docSnap.id;
             const isCompleted = ticket.status === 'completed' || ticket.status === 'replied';
 
-            // حساب الوقت (SLA Logic)
+            // حساب الوقت
             let timeBadgeHTML = '';
             let cardClass = '';
             
@@ -283,12 +318,11 @@
                 timeBadgeHTML = `<span class="badge bg-success">تم الحل</span>`;
             }
 
-            // رسم الكارت (ضفنا كلاس ticket-col عشان البحث يلاقيه)
             const html = `
-                <div class="col-lg-4 col-md-6 ticket-col" style="${isCompleted ? 'opacity:0.5' : ''}">
+                <div class="col-lg-4 col-md-6 ticket-col" style="${isCompleted ? 'opacity:0.6' : ''}">
                     <div class="ticket-card ${cardClass}">
                         <div class="ticket-header">
-                            <span style="font-family:monospace">#${ticketId.slice(0,4)}</span>
+                            <span class="text-white" style="font-family:monospace">#${ticketId.slice(0,4)}</span>
                             ${timeBadgeHTML}
                         </div>
                         
@@ -296,9 +330,9 @@
                             <span class="ticket-subject">${ticket.subject || 'بدون عنوان'}</span>
                             <div class="ticket-msg">${ticket.message || '...'}</div>
                             
-                            <div class="d-flex justify-content-between text-muted" style="font-size:0.8rem">
+                            <div class="d-flex justify-content-between" style="font-size:0.85rem; color: #ccc;">
                                 <span><i class="fas fa-user ms-1"></i> ${ticket.studentName || 'طالب'}</span>
-                                <span style="font-family:monospace" class="text-white"><i class="fas fa-code"></i> ${ticket.studentCode || ''}</span>
+                                <span style="font-family:monospace; color: var(--primary)"><i class="fas fa-code"></i> ${ticket.studentCode || ''}</span>
                             </div>
                         </div>
 
@@ -313,7 +347,6 @@
             ticketsContainer.innerHTML += html;
         });
 
-        // تحديث العدادات
         document.getElementById('pending-count').innerText = pending;
         document.getElementById('replied-count').innerText = replied;
         document.getElementById('overdue-count').innerText = overdue;
