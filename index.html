@@ -10,15 +10,15 @@
 
     <style>
         :root {
-            /* === ألوان الوضع الداكن (Dark Mode) === */
-            --bg-body: #0f1115;       /* خلفية سوداء هادئة */
-            --card-bg: #181b21;       /* لون الكروت غامق */
-            --primary: #4361ee;       /* اللون الأزرق المميز */
-            --text-main: #ffffff;     /* النص الأبيض */
-            --text-muted: #a0a0a0;    /* النص الرمادي */
-            --border-color: #2a2e35;  /* لون الحدود */
-            --success: #00b894;       /* أخضر للنجاح */
-            --warning: #fdcb6e;       /* برتقالي للانتظار */
+            --bg-body: #0f1115;
+            --card-bg: #181b21;
+            --primary: #4361ee;
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --border-color: #2a2e35;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #ff4757;
         }
 
         body {
@@ -28,129 +28,82 @@
             padding-bottom: 50px;
         }
 
-        /* === الهيدر (العنوان) === */
+        /* === الهيدر === */
         .page-header {
             background: linear-gradient(135deg, #1e2a4a, #10141d);
-            padding: 40px 20px;
+            padding: 30px 20px;
             border-bottom: 1px solid var(--border-color);
-            margin-bottom: 40px;
-            position: relative;
-            overflow: hidden;
+            margin-bottom: 30px;
+            border-radius: 0 0 20px 20px;
         }
-        
-        .page-header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--success));
-        }
+        .header-title { font-weight: 700; font-size: 1.8rem; }
 
-        .header-title {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        /* === كروت الإحصائيات (العدادات) === */
+        /* === الكروت العلوية === */
         .stat-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 25px;
+            border-radius: 12px;
+            padding: 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            transition: transform 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
-        .stat-card:hover { transform: translateY(-5px); border-color: var(--primary); }
-
-        /* خط ملون تحت الكارت */
-        .stat-card.replied { border-bottom: 4px solid var(--success); }
-        .stat-card.pending { border-bottom: 4px solid var(--warning); }
-
-        .stat-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .stat-info h3 { font-weight: 700; margin: 0; font-size: 2.5rem; }
-        .stat-info p { color: var(--text-muted); margin: 0; font-size: 0.9rem; margin-top: 5px; }
+        .stat-card.pending { border-bottom: 3px solid var(--warning); }
+        .stat-card.replied { border-bottom: 3px solid var(--success); }
+        .stat-card.danger { border-bottom: 3px solid var(--danger); } /* كرت جديد للمتأخر */
 
         /* === كروت الرسائل === */
         .ticket-card {
             background: var(--card-bg);
             border-radius: 12px;
             border: 1px solid var(--border-color);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             transition: all 0.3s ease;
             position: relative;
         }
         
-        .ticket-card:hover {
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border-color: var(--primary);
-        }
-
         .ticket-header {
-            padding: 15px 20px;
+            padding: 12px 15px;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255,255,255,0.02);
-            color: var(--text-muted);
             font-size: 0.85rem;
+            background: rgba(255,255,255,0.02);
         }
 
-        .ticket-body { padding: 20px; }
+        .ticket-body { padding: 15px; }
 
         .ticket-subject {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
-            color: var(--primary); /* لون العنوان أزرق */
-            margin-bottom: 12px;
+            color: var(--primary);
+            margin-bottom: 8px;
             display: block;
         }
 
         .ticket-msg {
             color: #d1d5db;
-            font-size: 0.95rem;
-            line-height: 1.6;
+            font-size: 0.9rem;
             background: rgba(0,0,0,0.3);
-            padding: 15px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 6px;
             border: 1px solid var(--border-color);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .student-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
             background: rgba(255,255,255,0.05);
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 0.85rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
             color: var(--text-muted);
             border: 1px solid var(--border-color);
         }
-        .student-chip i { color: var(--text-main); }
 
-        /* زرار الرد */
         .btn-action {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background: var(--primary);
             color: white;
             border: none;
@@ -160,58 +113,85 @@
         }
         .btn-action:hover { background: #304ffe; }
 
-        /* Loader */
-        .spinner-container { text-align: center; padding: 50px; color: var(--primary); }
+        /* === سحر الـ 24 ساعة (الألوان والأنيميشن) === */
+        
+        /* بادج الوقت */
+        .time-badge {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .time-safe { background: rgba(0, 184, 148, 0.15); color: var(--success); }
+        .time-warning { background: rgba(253, 203, 110, 0.15); color: var(--warning); }
+        
+        /* الأحمر الخطر */
+        .time-danger { 
+            background: rgba(255, 71, 87, 0.2); 
+            color: var(--danger); 
+            border: 1px solid var(--danger);
+            animation: pulse-red 2s infinite; /* أنيميشن نبض */
+        }
+        
+        /* بوردر الكارت يحمر لو الوقت أزف */
+        .card-danger { border-color: var(--danger) !important; box-shadow: 0 0 10px rgba(255, 71, 87, 0.1); }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 71, 87, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
+        }
+
     </style>
 </head>
 <body>
 
 <div class="page-header text-center">
-    <h2 class="header-title">
-        <i class="fas fa-headset me-2"></i> لوحة إدارة الدعم الفني
+    <h2 class="header-title text-white">
+        <i class="fas fa-user-astronaut me-2"></i> غرفة عمليات FULL MARK
     </h2>
-    <h4 class="text-white-50 mt-2" style="font-weight: 400;">لمنصة FULL MARK 🎓</h4>
+    <p class="text-white-50 m-0" style="font-size: 0.9rem;">هدفنا: الرد على الجميع في أقل من 24 ساعة 🚀</p>
 </div>
 
 <div class="container">
     
-    <div class="row g-4 mb-5">
-        <div class="col-md-6">
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
             <div class="stat-card pending">
-                <div class="stat-info">
+                <div>
                     <h3 id="pending-count" class="text-warning">0</h3>
-                    <p>رسائل بانتظار الرد (جديد)</p>
+                    <p class="m-0" style="font-size:0.8rem">قيد الانتظار</p>
                 </div>
-                <div class="stat-icon" style="color: var(--warning);">
-                    <i class="fas fa-clock"></i>
-                </div>
+                <i class="fas fa-clock fa-2x text-warning opacity-50"></i>
             </div>
         </div>
-        
-        <div class="col-md-6">
+        <div class="col-md-4">
+            <div class="stat-card danger">
+                <div>
+                    <h3 id="overdue-count" class="text-danger">0</h3>
+                    <p class="m-0" style="font-size:0.8rem">تجاوزت 24 ساعة (خطر!)</p>
+                </div>
+                <i class="fas fa-exclamation-triangle fa-2x text-danger opacity-50"></i>
+            </div>
+        </div>
+        <div class="col-md-4">
             <div class="stat-card replied">
-                <div class="stat-info">
+                <div>
                     <h3 id="replied-count" class="text-success">0</h3>
-                    <p>رسائل تم الرد عليها</p>
+                    <p class="m-0" style="font-size:0.8rem">تم الرد بنجاح</p>
                 </div>
-                <div class="stat-icon" style="color: var(--success);">
-                    <i class="fas fa-check-circle"></i>
-                </div>
+                <i class="fas fa-check-circle fa-2x text-success opacity-50"></i>
             </div>
         </div>
     </div>
 
-    <div class="d-flex align-items-center justify-content-between mb-4 border-bottom border-secondary pb-3">
-        <h4 class="fw-bold text-white m-0">
-            <i class="fas fa-inbox me-2" style="color: var(--primary)"></i> أحدث الرسائل الواردة
-        </h4>
-        <span class="badge bg-danger rounded-pill px-3 py-2">Real-time</span>
-    </div>
-
-    <div class="row" id="tickets-container">
-        <div class="spinner-container">
-            <div class="spinner-border" role="status"></div>
-            <p class="mt-3">جاري الاتصال بقاعدة بيانات FULL MARK...</p>
+    <div id="tickets-container" class="row">
+        <div class="text-center text-muted py-5">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2">جاري فحص التوقيتات...</p>
         </div>
     </div>
 
@@ -221,7 +201,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, collection, onSnapshot, query, orderBy, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // إعدادات الفايربيز بتاعتك
     const firebaseConfig = {
       apiKey: "AIzaSyDH3cy-jkDphnPGzHUwd4rd9ogZDY7uUgM",
       authDomain: "quest-full.firebaseapp.com",
@@ -238,8 +217,10 @@
     const ticketsContainer = document.getElementById('tickets-container');
     const pendingCountEl = document.getElementById('pending-count');
     const repliedCountEl = document.getElementById('replied-count');
+    const overdueCountEl = document.getElementById('overdue-count');
 
-    // بنجيب الرسائل مرتبة بالأحدث
+    // بنجيب الأقدم أولاً (asc) عشان نلحق اللي قرب يخلص وقته
+    // أو نجيب الأحدث (desc) ونميز القديم بلون أحمر.. خلينا في الأحدث عشان تشوف الجديد بردو
     const q = query(collection(db, "tickets"), orderBy("createdAt", "desc"));
 
     onSnapshot(q, (snapshot) => {
@@ -247,113 +228,103 @@
         
         let pending = 0;
         let replied = 0;
+        let overdue = 0;
 
         if (snapshot.empty) {
-            ticketsContainer.innerHTML = `
-                <div class="col-12 text-center py-5">
-                    <i class="fas fa-check-double fa-4x mb-3 text-muted" style="opacity: 0.3"></i>
-                    <h5 class="text-muted">لا توجد رسائل جديدة، كل شيء تمام! 🎉</h5>
-                </div>
-            `;
-            // تصفير العدادات
-            pendingCountEl.innerText = 0;
-            repliedCountEl.innerText = 0;
+            ticketsContainer.innerHTML = `<div class="col-12 text-center text-muted py-5">لا توجد رسائل حالياً</div>`;
             return;
         }
 
         snapshot.forEach((docSnap) => {
             const ticket = docSnap.data();
             const ticketId = docSnap.id;
-            
-            // حساب العدادات بناءً على حالة الرسالة
-            // (هنفترض ان لو مفيش حالة مكتوبة تبقى pending)
-            if (ticket.status === 'completed' || ticket.status === 'replied') {
-                replied++;
-            } else {
-                pending++;
-            }
-
-            // تنسيق التاريخ
-            let dateString = "الآن";
-            if (ticket.createdAt) {
-                const date = new Date(ticket.createdAt.seconds * 1000);
-                dateString = date.toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'}) + ' ' + date.toLocaleDateString('ar-EG');
-            }
-
-            // عرض الرسائل (بنظهر بس الرسائل اللي لسه متردش عليها عشان الزحمة)
-            // لو عايز تظهر كله شيل الشرط ده (if)
             const isCompleted = ticket.status === 'completed' || ticket.status === 'replied';
+
+            // === 1. منطق حساب الوقت (The Logic) ===
+            let timeBadgeHTML = '';
+            let cardClass = '';
             
-            // ستايل مختلف لو تم الرد
-            const cardOpacity = isCompleted ? 'opacity: 0.6;' : '';
-            const statusBadge = isCompleted ? '<span class="badge bg-success ms-2">تم الرد</span>' : '<span class="badge bg-warning text-dark ms-2">جديد</span>';
+            if (!isCompleted && ticket.createdAt) {
+                const createdDate = new Date(ticket.createdAt.seconds * 1000);
+                const now = new Date();
+                const diffMs = now - createdDate;
+                const diffHours = diffMs / (1000 * 60 * 60); // فرق الساعات
+                const hoursLeft = 24 - diffHours;
+
+                if (diffHours >= 24) {
+                    // تجاوز 24 ساعة (كارثة)
+                    overdue++;
+                    pending++;
+                    cardClass = 'card-danger'; // البوردر يحمر
+                    timeBadgeHTML = `<span class="time-badge time-danger"><i class="fas fa-skull"></i> متأخر ${Math.floor(diffHours)} ساعة</span>`;
+                } else if (diffHours >= 20) {
+                    // فاضل أقل من 4 ساعات (خطر)
+                    pending++;
+                    cardClass = 'card-danger';
+                    timeBadgeHTML = `<span class="time-badge time-danger"><i class="fas fa-fire"></i> باقي ${Math.floor(hoursLeft)} س</span>`;
+                } else if (diffHours >= 12) {
+                    // عدى نص الوقت (تحذير)
+                    pending++;
+                    timeBadgeHTML = `<span class="time-badge time-warning"><i class="fas fa-hourglass-half"></i> باقي ${Math.floor(hoursLeft)} س</span>`;
+                } else {
+                    // لسه في الأمان
+                    pending++;
+                    timeBadgeHTML = `<span class="time-badge time-safe"><i class="fas fa-check"></i> جديد (${Math.floor(hoursLeft)} س متبقية)</span>`;
+                }
+            } else if (isCompleted) {
+                replied++;
+                timeBadgeHTML = `<span class="badge bg-success"><i class="fas fa-check-double"></i> تم الحل</span>`;
+            }
+
+            // === 2. الرسم ===
+            const dateObj = ticket.createdAt ? new Date(ticket.createdAt.seconds * 1000) : new Date();
+            const dateString = dateObj.toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'});
 
             const html = `
-                <div class="col-lg-4 col-md-6" style="${cardOpacity}">
-                    <div class="ticket-card">
+                <div class="col-lg-4 col-md-6" style="${isCompleted ? 'opacity:0.5' : ''}">
+                    <div class="ticket-card ${cardClass}">
                         <div class="ticket-header">
-                            <div>
-                                <span style="font-family: monospace; color: var(--primary)">#${ticketId.slice(0, 5)}</span>
-                                ${statusBadge}
-                            </div>
-                            <span><i class="far fa-clock me-1"></i> ${dateString}</span>
+                            <span style="font-family:monospace">#${ticketId.slice(0,4)}</span>
+                            ${timeBadgeHTML}
                         </div>
                         
                         <div class="ticket-body">
                             <span class="ticket-subject">${ticket.subject || 'بدون عنوان'}</span>
-                            <div class="ticket-msg">
-                                ${ticket.message || 'لا يوجد محتوى'}
-                            </div>
+                            <div class="ticket-msg">${ticket.message || '...'}</div>
                             
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <div class="student-chip">
-                                    <i class="fas fa-user"></i>
-                                    ${ticket.studentName || 'طالب'}
-                                </div>
-                                <div class="student-chip">
-                                    <i class="fas fa-code"></i>
-                                    ${ticket.studentCode || '---'}
-                                </div>
+                            <div class="d-flex justify-content-between text-muted" style="font-size:0.8rem">
+                                <span><i class="fas fa-user ms-1"></i> ${ticket.studentName || 'طالب'}</span>
+                                <span><i class="far fa-clock ms-1"></i> ${dateString}</span>
                             </div>
                         </div>
 
                         ${!isCompleted ? `
                         <button class="btn-action" onclick="markAsReplied('${ticketId}')">
-                            رد على الرسالة <i class="fas fa-paper-plane ms-2"></i>
+                            رد وإغلاق التذكرة
                         </button>
-                        ` : `
-                        <button class="btn-action" style="background: #2a2e35; cursor: default;">
-                             <i class="fas fa-check me-2"></i> تم الرد مسبقاً
-                        </button>
-                        `}
+                        ` : ''}
                     </div>
                 </div>
             `;
-
             ticketsContainer.innerHTML += html;
         });
 
-        // تحديث الأرقام في الكروت
+        // تحديث العدادات
         pendingCountEl.innerText = pending;
         repliedCountEl.innerText = replied;
+        overdueCountEl.innerText = overdue;
     });
 
-    // دالة لتغيير حالة الرسالة عند الضغط على زر الرد (اختياري)
     window.markAsReplied = async (id) => {
-        const reply = prompt("اكتب ردك هنا (سيتم حفظ الحالة كـ 'تم الرد'):");
+        const reply = prompt("اكتب الرد للطالب:");
         if (reply) {
             try {
-                const ticketRef = doc(db, "tickets", id);
-                await updateDoc(ticketRef, {
+                await updateDoc(doc(db, "tickets", id), {
                     status: 'replied',
                     adminReply: reply,
                     repliedAt: new Date()
                 });
-                alert("تم إرسال الرد وتحديث الحالة بنجاح! ✅");
-            } catch (error) {
-                console.error("Error updating document: ", error);
-                alert("حدث خطأ أثناء التحديث");
-            }
+            } catch (e) { alert("حدث خطأ"); }
         }
     }
 </script>
