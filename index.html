@@ -3,83 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | لوحة التحكم</title>
+    <title>لوحة التحكم | Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
+
     <style>
-        /* === ألوان التصميم الأصلي (أسود x برتقالي) === */
+        /* === التصميم (أسود x برتقالي) === */
         :root {
-            --bg-main: #0a0a0a;         /* أسود قاتم */
-            --card-bg: #111111;         /* أسود افتح سنة */
-            --border-color: #333;       /* لون الحدود الرصاصي */
-            --orange-primary: #ff6600;  /* البرتقالي بتاعك */
+            --bg-main: #0a0a0a;
+            --card-bg: #111;
+            --border-color: #333;
+            --orange-primary: #ff6600;
             --text-color: #ddd;
-            --green-accent: #00cc66;
         }
 
         body {
             background-color: var(--bg-main);
             color: var(--text-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* تأثير الخلفية المربعات الخفيفة */
-            background-image: linear-gradient(#1a1a1a 1px, transparent 1px),
-            linear-gradient(90deg, #1a1a1a 1px, transparent 1px);
-            background-size: 30px 30px;
+            padding: 20px;
         }
 
-        /* === كروت الإحصائيات اللي فوق === */
+        /* كروت الإحصائيات */
         .stat-card {
-            background-color: #1a1e24; /* لون رمادي مزرق غامق زي الصورة */
+            background-color: #1a1e24;
             border: 1px solid var(--border-color);
             padding: 20px;
             text-align: center;
-            border-bottom: 4px solid; 
+            border-bottom: 4px solid;
             margin-bottom: 20px;
-        }
-        .stat-card.green { border-bottom-color: var(--green-accent); }
-        .stat-card.red { border-bottom-color: #ff3333; }
-
-        .stat-number { font-size: 2.5rem; font-weight: bold; color: #fff; }
-        .stat-label { color: #aaa; font-size: 0.9rem; }
-
-        /* === الفلتر === */
-        .nav-tabs { border-bottom: 1px solid var(--border-color); margin-bottom: 20px; }
-        .nav-link { color: #888; border: none; }
-        .nav-link.active {
-            background-color: var(--orange-primary) !important;
-            color: #000 !important;
-            font-weight: bold;
-            border-radius: 4px 4px 0 0;
+            border-radius: 5px;
         }
 
-        /* === كروت الرسائل === */
+        /* كرت الرسالة */
         .ticket-card {
-            background-color: var(--card-bg); /* أسود */
-            border: 1px solid var(--border-color); /* برواز رفيع */
-            border-radius: 4px;
-            padding: 0;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
             margin-bottom: 20px;
-            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
         }
+        .ticket-card:hover { transform: translateY(-5px); border-color: var(--orange-primary); }
 
-        /* رأس الكارت (التاريخ والكود) */
         .ticket-header {
             display: flex;
             justify-content: space-between;
             padding: 10px 15px;
-            font-size: 0.8rem;
-            color: #666;
             border-bottom: 1px dashed #333;
+            font-size: 0.8rem;
+            color: #777;
         }
 
         .ticket-body { padding: 15px; }
 
         .ticket-title {
-            color: var(--orange-primary); /* العنوان برتقالي */
+            color: var(--orange-primary);
             font-size: 1.1rem;
-            margin-bottom: 10px;
             font-weight: bold;
+            margin-bottom: 10px;
         }
 
         .ticket-msg {
@@ -88,21 +70,20 @@
             border-radius: 4px;
             border: 1px solid #222;
             font-size: 0.9rem;
+            color: #ccc;
             margin-bottom: 15px;
-            color: #bbb;
         }
 
-        .student-row {
+        .student-info {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
             font-size: 0.9rem;
         }
-        .student-name { color: var(--orange-primary); font-weight: bold; }
-        .student-code { color: #fff; font-family: monospace; background: #222; padding: 2px 6px; border-radius: 4px; }
+        .student-code { 
+            background: #222; color: #fff; padding: 2px 8px; 
+            border-radius: 4px; font-family: monospace; 
+        }
 
-        /* زرار الرد */
         .btn-reply {
             width: 100%;
             background-color: var(--orange-primary);
@@ -110,107 +91,125 @@
             font-weight: bold;
             border: none;
             padding: 10px;
-            border-radius: 0 0 4px 4px; /* كيرف من تحت بس */
+            cursor: pointer;
         }
         .btn-reply:hover { background-color: #e65c00; }
-
-        /* تنسيق الكارت اللي في النص (النشط) عشان يبقى مميز */
-        .active-card {
-            border: 1px solid var(--orange-primary);
-            box-shadow: 0 0 10px rgba(255, 102, 0, 0.2);
-        }
     </style>
 </head>
 <body>
 
-<div class="container mt-5">
-
+<div class="container">
+    
     <div class="row">
         <div class="col-md-6">
-            <div class="stat-card green">
-                <div class="stat-number">570</div>
-                <div class="stat-label">تم الرد</div>
+            <div class="stat-card" style="border-bottom-color: #00cc66;">
+                <h2 class="fw-bold text-white" id="total-count">0</h2>
+                <span class="text-muted">إجمالي الرسائل</span>
             </div>
         </div>
         <div class="col-md-6">
-            <div class="stat-card red">
-                <div class="stat-number">200</div>
-                <div class="stat-label">رسائل جديدة</div>
+            <div class="stat-card" style="border-bottom-color: #ff3333;">
+                <h2 class="fw-bold text-white">Live</h2>
+                <span class="text-muted">حالة الاتصال</span>
             </div>
         </div>
     </div>
 
-    <div class="d-flex justify-content-end mb-3">
-        <ul class="nav nav-tabs border-0">
-            <li class="nav-item"><a class="nav-link" href="#">الأرشيف</a></li>
-            <li class="nav-item"><a class="nav-link active" href="#">وارد جديد</a></li>
-        </ul>
+    <h4 class="mb-4 text-white border-bottom pb-2 border-secondary">
+        <span style="color: var(--orange-primary)">📥</span> وارد جديد
+    </h4>
+
+    <div class="row" id="tickets-container">
+        <div class="col-12 text-center text-muted py-5">
+            جاري الاتصال بقاعدة البيانات...
+        </div>
     </div>
 
-    <div class="row">
-        
-        <div class="col-md-4">
-            <div class="ticket-card">
-                <div class="ticket-header">
-                    <span>20:11:55 , 03/02/2026</span>
-                    <span>#tp-ftY</span>
-                </div>
-                <div class="ticket-body">
-                    <div class="ticket-title">| المحاضرة الأولى</div>
-                    <div class="ticket-msg">
-                        المحاضرة الأولى والتانية عضوية عبد الجواد مش راضية تفتح..
-                    </div>
-                    <div class="student-row">
-                        <span class="student-name"><i class="fas fa-user"></i> طالب</span>
-                        <span class="student-code">&lt;/&gt; 169019</span>
-                    </div>
-                </div>
-                <button class="btn-reply">رد الآن</button>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="ticket-card active-card">
-                <div class="ticket-header">
-                    <span>20:12:27 , 03/02/2026</span>
-                    <span>#WOCQ_Q</span>
-                </div>
-                <div class="ticket-body">
-                    <div class="ticket-title">ياريت المحاضرة التانية</div>
-                    <div class="ticket-msg">
-                        المحاضرة الثانية احمد الجوهري مش بتفتح.. جاري المراجعة
-                    </div>
-                    <div class="student-row">
-                        <span class="student-name"><i class="fas fa-user"></i> طالب</span>
-                        <span class="student-code">&lt;/&gt; 461435</span>
-                    </div>
-                </div>
-                <button class="btn-reply">رد الآن</button>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="ticket-card">
-                <div class="ticket-header">
-                    <span>23:50:55 , 03/02/2026</span>
-                    <span>#OMUMTJ</span>
-                </div>
-                <div class="ticket-body">
-                    <div class="ticket-title">طلب</div>
-                    <div class="ticket-msg">
-                        مفيش ولا محاضرة ليه؟ الموقع واقع ولا ايه؟
-                    </div>
-                    <div class="student-row">
-                        <span class="student-name"><i class="fas fa-user"></i> زياد ياسر</span>
-                        <span class="student-code">&lt;/&gt; 115114</span>
-                    </div>
-                </div>
-                <button class="btn-reply">رد الآن</button>
-            </div>
-        </div>
-
-    </div>
 </div>
+
+<script type="module">
+    // 1. استدعاء مكتبات الفايربيز من الويب مباشرة
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // 2. إعدادات مشروعك (زي ما بعتها بالظبط)
+    const firebaseConfig = {
+      apiKey: "AIzaSyDH3cy-jkDphnPGzHUwd4rd9ogZDY7uUgM",
+      authDomain: "quest-full.firebaseapp.com",
+      databaseURL: "https://quest-full-default-rtdb.firebaseio.com",
+      projectId: "quest-full",
+      storageBucket: "quest-full.firebasestorage.app",
+      messagingSenderId: "501161882802",
+      appId: "1:501161882802:web:08d6230eb09741a5c8c5ab"
+    };
+
+    // 3. تشغيل الفايربيز
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // 4. الدالة اللي بتجيب البيانات وترسمها
+    const ticketsContainer = document.getElementById('tickets-container');
+    const totalCountEl = document.getElementById('total-count');
+
+    // بنقوله هات البيانات من كوليكشن "tickets" ورتبهم بالأحدث
+    const q = query(collection(db, "tickets"), orderBy("createdAt", "desc"));
+
+    // استماع حي للبيانات (Real-time Listener)
+    onSnapshot(q, (snapshot) => {
+        ticketsContainer.innerHTML = ''; // بنفضي المكان الأول
+        
+        // تحديث العداد
+        totalCountEl.innerText = snapshot.size;
+
+        if (snapshot.empty) {
+            ticketsContainer.innerHTML = '<div class="col-12 text-center text-muted">لا توجد رسائل حالياً.</div>';
+            return;
+        }
+
+        // لف على كل رسالة وارسمها
+        snapshot.forEach((doc) => {
+            const ticket = doc.data();
+            const ticketId = doc.id;
+            
+            // تحويل التاريخ
+            let dateString = "الآن";
+            if (ticket.createdAt) {
+                const date = new Date(ticket.createdAt.seconds * 1000);
+                dateString = date.toLocaleString('ar-EG');
+            }
+
+            // كود الـ HTML لكل كارت
+            const html = `
+                <div class="col-md-4 col-sm-6">
+                    <div class="ticket-card">
+                        <div class="ticket-header">
+                            <span>${dateString}</span>
+                            <span>#${ticketId.slice(0, 5)}</span>
+                        </div>
+                        <div class="ticket-body">
+                            <div class="ticket-title">| ${ticket.subject || 'بدون عنوان'}</div>
+                            <div class="ticket-msg">${ticket.message || ''}</div>
+                            
+                            <div class="student-info">
+                                <span style="color: #ff6600; font-weight: bold;">
+                                    <i class="fas fa-user"></i> ${ticket.studentName || 'طالب'}
+                                </span>
+                                <span class="student-code">&lt;/&gt; ${ticket.studentCode || '---'}</span>
+                            </div>
+                        </div>
+                        <button class="btn-reply" onclick="alert('الرد على الطالب: ${ticket.studentName}')">رد الآن</button>
+                    </div>
+                </div>
+            `;
+
+            ticketsContainer.innerHTML += html;
+        });
+    }, (error) => {
+        console.error("Error getting tickets: ", error);
+        ticketsContainer.innerHTML = `<div class="col-12 text-center text-danger">حدث خطأ في جلب البيانات: ${error.message}<br>تأكد من إنشاء Collection باسم tickets في الفايربيز</div>`;
+    });
+
+</script>
 
 </body>
 </html>
