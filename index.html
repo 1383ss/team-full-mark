@@ -17,8 +17,8 @@
             --text-main: #ffffff;
             --text-secondary: #e0e0e0;
             --border-color: #333333;
-            --success: #00e676;       
-            --warning: #ffea00;       
+            --success: #00e676;        
+            --warning: #ffea00;        
             --danger: #ff1744;        
         }
 
@@ -304,20 +304,23 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, onSnapshot, query, orderBy, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    // استدعاء مكتبات الـ Realtime Database
+    import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDH3cy-jkDphnPGzHUwd4rd9ogZDY7uUgM",
       authDomain: "quest-full.firebaseapp.com",
-      databaseURL: "https://quest-full-default-rtdb.firebaseio.com",
+      databaseURL: "https://quest-full-default-rtdb.firebaseio.com", // الرابط الخاص بك
       projectId: "quest-full",
       storageBucket: "quest-full.firebasestorage.app",
       messagingSenderId: "501161882802",
       appId: "1:501161882802:web:08d6230eb09741a5c8c5ab"
     };
 
+    // تهيئة التطبيق والداتابيز
     const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    const db = getDatabase(app);
+    
     const notificationSound = document.getElementById('notification-sound');
     let isFirstLoad = true; 
 
@@ -329,6 +332,7 @@
     const currentTicketIdInput = document.getElementById('current-ticket-id');
     const modalTitle = document.getElementById('modalTitle');
 
+    // البحث
     searchInput.addEventListener('keyup', (e) => {
         const term = e.target.value.toLowerCase();
         const cards = document.querySelectorAll('.ticket-col');
@@ -349,62 +353,84 @@
         replyText.value = text;
     }
 
-    window.submitReply = async () => {
+    // إرسال الرد وتحديث الحالة في Realtime Database
+    window.submitReply = () => {
         const id = currentTicketIdInput.value;
         const reply = replyText.value;
         
         if (!reply) { alert("اكتب رد الأول يا هندسة!"); return; }
 
-        try {
-            await updateDoc(doc(db, "tickets", id), {
-                status: 'replied',
-                adminReply: reply,
-                repliedAt: new Date()
-            });
-            replyModal.hide(); 
-        } catch (error) {
+        // التحديث باستخدام update بدلاً من updateDoc
+        const ticketRef = ref(db, 'tickets/' + id);
+        update(ticketRef, {
+            status: 'replied',
+            adminReply: reply,
+            repliedAt: Date.now() // استخدام التوقيت الحالي
+        }).then(() => {
+            replyModal.hide();
+        }).catch((error) => {
             console.error(error);
             alert("حصل خطأ في الإرسال");
-        }
+        });
     }
 
-    const q = query(collection(db, "tickets"), orderBy("createdAt", "desc"));
+    // الاستماع للبيانات من جدول 'tickets'
+    const ticketsRef = ref(db, 'tickets');
 
-    onSnapshot(q, (snapshot) => {
-        if (!isFirstLoad) {
-            snapshot.docChanges().forEach((change) => {
-                if (change.type === "added") {
-                    notificationSound.play().catch(e => console.log("Sound error"));
-                }
-            });
+    onValue(ticketsRef, (snapshot) => {
+        const data = snapshot.val();
+        
+        // تشغيل صوت التنبيه عند التحديث (ما عدا أول مرة)
+        if (!isFirstLoad && data) {
+             // هنا ممكن تعمل لوجيك معقد عشان تعرف لو فيه جديد بس، للتبسيط شغلناها مع أي تحديث
+            notificationSound.play().catch(e => console.log("Sound interaction needed"));
         }
         isFirstLoad = false;
 
         ticketsContainer.innerHTML = '';
         let pending = 0, replied = 0, overdue = 0;
 
-        if (snapshot.empty) {
+        if (!data) {
             ticketsContainer.innerHTML = `
                 <div class="col-12 text-center" style="padding: 50px; color: #fff; opacity: 0.8;">
                     <i class="fas fa-check-double fa-4x mb-3" style="color: var(--success);"></i>
                     <h3>عاش يا رجاله! مفيش رسايل تانية 🎉</h3>
                 </div>`;
-            document.getElementById('pending-count').innerText = 0;
-            document.getElementById('replied-count').innerText = 0;
-            document.getElementById('overdue-count').innerText = 0;
+            updateStats(0, 0, 0);
             return;
         }
 
-        snapshot.forEach((docSnap) => {
-            const ticket = docSnap.data();
-            const ticketId = docSnap.id;
+        // تحويل الداتا من Object إلى Array عشان نعرف نرتبها
+        let ticketsArray = [];
+        for (let id in data) {
+            ticketsArray.push({ id, ...data[id] });
+        }
+
+        // ترتيب حسب الوقت (الأحدث أولاً)
+        ticketsArray.sort((a, b) => {
+            // نتأكد إن createdAt موجود، لو مش موجود نعتبره 0
+            let timeA = a.createdAt || 0;
+            let timeB = b.createdAt || 0;
+            // لو التايم ستامب جاي object زي Firestore نحوله
+            if (typeof timeA === 'object' && timeA.seconds) timeA = timeA.seconds * 1000;
+            if (typeof timeB === 'object' && timeB.seconds) timeB = timeB.seconds * 1000;
+            
+            return timeB - timeA; 
+        });
+
+        ticketsArray.forEach((ticket) => {
+            const ticketId = ticket.id;
             const isCompleted = ticket.status === 'completed' || ticket.status === 'replied';
 
             let timeBadgeHTML = '';
             let cardClass = '';
             
             if (!isCompleted && ticket.createdAt) {
-                const createdDate = new Date(ticket.createdAt.seconds * 1000);
+                let createdTime = ticket.createdAt;
+                // معالجة صيغ الوقت المختلفة
+                if (typeof createdTime === 'object' && createdTime.seconds) createdTime = createdTime.seconds * 1000;
+                
+                const createdDate = new Date(createdTime);
                 const diffHours = (new Date() - createdDate) / (1000 * 60 * 60);
                 const hoursLeft = 24 - diffHours;
 
@@ -429,7 +455,7 @@
                 <div class="col-lg-4 col-md-6 ticket-col" style="${isCompleted ? 'opacity:0.6' : ''}">
                     <div class="ticket-card ${cardClass}">
                         <div class="ticket-header">
-                            <span class="text-white" style="font-family:monospace">#${ticketId.slice(0,4)}</span>
+                            <span class="text-white" style="font-family:monospace">#${ticketId.slice(-4)}</span>
                             ${timeBadgeHTML}
                         </div>
                         
@@ -454,10 +480,14 @@
             ticketsContainer.innerHTML += html;
         });
 
-        document.getElementById('pending-count').innerText = pending;
-        document.getElementById('replied-count').innerText = replied;
-        document.getElementById('overdue-count').innerText = overdue;
+        updateStats(pending, replied, overdue);
     });
+
+    function updateStats(p, r, o) {
+        document.getElementById('pending-count').innerText = p;
+        document.getElementById('replied-count').innerText = r;
+        document.getElementById('overdue-count').innerText = o;
+    }
 </script>
 
 </body>
