@@ -3,136 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم | Admin Dashboard</title>
+    <title>لوحة الإدارة | Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* === التصميم (أسود x برتقالي) === */
         :root {
-            --bg-main: #0a0a0a;
-            --card-bg: #111;
-            --border-color: #333;
-            --orange-primary: #ff6600;
-            --text-color: #ddd;
+            --primary: #4361ee;       /* أزرق زاهي */
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --bg-body: #f8f9fa;       /* خلفية فاتحة */
+            --text-dark: #2b2d42;
+            --text-gray: #8d99ae;
+            --white: #ffffff;
+            --success: #4cc9f0;
         }
 
         body {
-            background-color: var(--bg-main);
-            color: var(--text-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding: 20px;
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            font-family: 'Cairo', sans-serif; /* الخط الجديد */
+            padding-bottom: 50px;
         }
 
-        /* كروت الإحصائيات */
+        /* === الهيدر (العنوان) === */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px 20px;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.2);
+        }
+
+        /* === كروت الإحصائيات === */
         .stat-card {
-            background-color: #1a1e24;
-            border: 1px solid var(--border-color);
-            padding: 20px;
-            text-align: center;
-            border-bottom: 4px solid;
-            margin-bottom: 20px;
-            border-radius: 5px;
+            background: var(--white);
+            border: none;
+            border-radius: 15px;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            height: 100%;
         }
+        .stat-card:hover { transform: translateY(-5px); }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .icon-blue { background: rgba(67, 97, 238, 0.1); color: var(--primary); }
+        .icon-green { background: rgba(76, 201, 240, 0.1); color: var(--success); }
 
-        /* كرت الرسالة */
+        .stat-info h3 { font-weight: 700; margin: 0; font-size: 2rem; }
+        .stat-info p { color: var(--text-gray); margin: 0; font-size: 0.9rem; }
+
+        /* === كروت الرسائل (Tickets) === */
         .ticket-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            margin-bottom: 20px;
+            background: var(--white);
+            border-radius: 16px;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            margin-bottom: 25px;
             overflow: hidden;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid #edf2f4;
         }
-        .ticket-card:hover { transform: translateY(-5px); border-color: var(--orange-primary); }
+        
+        .ticket-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-color: var(--primary-light);
+        }
 
         .ticket-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #edf2f4;
             display: flex;
             justify-content: space-between;
-            padding: 10px 15px;
-            border-bottom: 1px dashed #333;
-            font-size: 0.8rem;
-            color: #777;
+            align-items: center;
+            background: #fafbfc;
         }
+        .ticket-id { 
+            font-weight: bold; 
+            color: var(--primary); 
+            background: rgba(67, 97, 238, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        .ticket-date { font-size: 0.8rem; color: var(--text-gray); }
 
-        .ticket-body { padding: 15px; }
+        .ticket-body { padding: 20px; }
 
-        .ticket-title {
-            color: var(--orange-primary);
+        .ticket-subject {
             font-size: 1.1rem;
-            font-weight: bold;
+            font-weight: 700;
+            color: var(--text-dark);
             margin-bottom: 10px;
+            display: block;
         }
 
         .ticket-msg {
-            background-color: #000;
-            padding: 10px;
-            border-radius: 4px;
-            border: 1px solid #222;
-            font-size: 0.9rem;
-            color: #ccc;
+            color: #6c757d;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
             margin-bottom: 15px;
         }
 
-        .student-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
+        .student-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            border: 1px solid #e9ecef;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dark);
         }
-        .student-code { 
-            background: #222; color: #fff; padding: 2px 8px; 
-            border-radius: 4px; font-family: monospace; 
+        .student-chip i { color: var(--secondary); }
+
+        /* زرار الرد */
+        .btn-action {
+            width: 100%;
+            padding: 12px;
+            background: white;
+            color: var(--primary);
+            border: none;
+            border-top: 1px solid #edf2f4;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+        .btn-action:hover {
+            background: var(--primary);
+            color: white;
         }
 
-        .btn-reply {
-            width: 100%;
-            background-color: var(--orange-primary);
-            color: #000;
-            font-weight: bold;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-        }
-        .btn-reply:hover { background-color: #e65c00; }
+        /* Loading */
+        .loader { color: var(--primary); font-size: 1.2rem; }
     </style>
 </head>
 <body>
 
+<div class="page-header text-center">
+    <h2 class="fw-bold mb-0"><i class="fas fa-headset me-2"></i> لوحة إدارة الدعم الفني</h2>
+    <p class="opacity-75 mt-2">متابعة طلبات الطلاب بشكل حي ومباشر</p>
+</div>
+
 <div class="container">
     
-    <div class="row">
-        <div class="col-md-6">
-            <div class="stat-card" style="border-bottom-color: #00cc66;">
-                <h2 class="fw-bold text-white" id="total-count">0</h2>
-                <span class="text-muted">إجمالي الرسائل</span>
+    <div class="row g-4 mb-5">
+        <div class="col-md-6 col-lg-4">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3 id="total-count">0</h3>
+                    <p>إجمالي الرسائل</p>
+                </div>
+                <div class="stat-icon icon-blue">
+                    <i class="fas fa-envelope-open-text"></i>
+                </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="stat-card" style="border-bottom-color: #ff3333;">
-                <h2 class="fw-bold text-white">Live</h2>
-                <span class="text-muted">حالة الاتصال</span>
+        <div class="col-md-6 col-lg-4">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3 class="text-success">Live</h3>
+                    <p>حالة النظام</p>
+                </div>
+                <div class="stat-icon icon-green">
+                    <i class="fas fa-wifi"></i>
+                </div>
             </div>
         </div>
     </div>
 
-    <h4 class="mb-4 text-white border-bottom pb-2 border-secondary">
-        <span style="color: var(--orange-primary)">📥</span> وارد جديد
-    </h4>
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <h4 class="fw-bold text-dark m-0">📥 أحدث الرسائل الواردة</h4>
+        <span class="badge bg-primary rounded-pill px-3 py-2">Real-time</span>
+    </div>
 
     <div class="row" id="tickets-container">
-        <div class="col-12 text-center text-muted py-5">
-            جاري الاتصال بقاعدة البيانات...
+        <div class="col-12 text-center py-5">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 text-muted fw-bold">جاري تحميل البيانات...</p>
         </div>
     </div>
 
 </div>
 
 <script type="module">
-    // 1. استدعاء مكتبات الفايربيز من الويب مباشرة
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // 2. إعدادات مشروعك (زي ما بعتها بالظبط)
+    // إعدادات مشروعك
     const firebaseConfig = {
       apiKey: "AIzaSyDH3cy-jkDphnPGzHUwd4rd9ogZDY7uUgM",
       authDomain: "quest-full.firebaseapp.com",
@@ -143,72 +220,75 @@
       appId: "1:501161882802:web:08d6230eb09741a5c8c5ab"
     };
 
-    // 3. تشغيل الفايربيز
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // 4. الدالة اللي بتجيب البيانات وترسمها
     const ticketsContainer = document.getElementById('tickets-container');
     const totalCountEl = document.getElementById('total-count');
 
-    // بنقوله هات البيانات من كوليكشن "tickets" ورتبهم بالأحدث
     const q = query(collection(db, "tickets"), orderBy("createdAt", "desc"));
 
-    // استماع حي للبيانات (Real-time Listener)
     onSnapshot(q, (snapshot) => {
-        ticketsContainer.innerHTML = ''; // بنفضي المكان الأول
-        
-        // تحديث العداد
+        ticketsContainer.innerHTML = ''; 
         totalCountEl.innerText = snapshot.size;
 
         if (snapshot.empty) {
-            ticketsContainer.innerHTML = '<div class="col-12 text-center text-muted">لا توجد رسائل حالياً.</div>';
+            ticketsContainer.innerHTML = `
+                <div class="col-12 text-center">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4076/4076432.png" width="150" class="mb-3 opacity-50">
+                    <h5 class="text-muted">لا توجد رسائل جديدة، كل شيء تمام! 🎉</h5>
+                </div>
+            `;
             return;
         }
 
-        // لف على كل رسالة وارسمها
         snapshot.forEach((doc) => {
             const ticket = doc.data();
             const ticketId = doc.id;
             
-            // تحويل التاريخ
             let dateString = "الآن";
             if (ticket.createdAt) {
                 const date = new Date(ticket.createdAt.seconds * 1000);
-                dateString = date.toLocaleString('ar-EG');
+                dateString = date.toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'}) + ' - ' + date.toLocaleDateString('ar-EG');
             }
 
-            // كود الـ HTML لكل كارت
+            // HTML الكارت الجديد (Clean Design)
             const html = `
-                <div class="col-md-4 col-sm-6">
+                <div class="col-lg-4 col-md-6">
                     <div class="ticket-card">
                         <div class="ticket-header">
-                            <span>${dateString}</span>
-                            <span>#${ticketId.slice(0, 5)}</span>
+                            <span class="ticket-id">#${ticketId.slice(0, 5)}</span>
+                            <span class="ticket-date"><i class="far fa-clock me-1"></i> ${dateString}</span>
                         </div>
+                        
                         <div class="ticket-body">
-                            <div class="ticket-title">| ${ticket.subject || 'بدون عنوان'}</div>
-                            <div class="ticket-msg">${ticket.message || ''}</div>
+                            <span class="ticket-subject">${ticket.subject || 'بدون عنوان'}</span>
+                            <div class="ticket-msg">
+                                ${ticket.message || 'لا يوجد محتوى'}
+                            </div>
                             
-                            <div class="student-info">
-                                <span style="color: #ff6600; font-weight: bold;">
-                                    <i class="fas fa-user"></i> ${ticket.studentName || 'طالب'}
-                                </span>
-                                <span class="student-code">&lt;/&gt; ${ticket.studentCode || '---'}</span>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div class="student-chip">
+                                    <i class="fas fa-user-circle fa-lg"></i>
+                                    ${ticket.studentName || 'طالب'}
+                                </div>
+                                <div class="student-chip" style="background: #f8f9fa;">
+                                    <i class="fas fa-code"></i>
+                                    ${ticket.studentCode || '---'}
+                                </div>
                             </div>
                         </div>
-                        <button class="btn-reply" onclick="alert('الرد على الطالب: ${ticket.studentName}')">رد الآن</button>
+
+                        <button class="btn-action" onclick="alert('جاري الرد على: ${ticket.studentName}')">
+                            رد على الرسالة <i class="fas fa-paper-plane ms-2"></i>
+                        </button>
                     </div>
                 </div>
             `;
 
             ticketsContainer.innerHTML += html;
         });
-    }, (error) => {
-        console.error("Error getting tickets: ", error);
-        ticketsContainer.innerHTML = `<div class="col-12 text-center text-danger">حدث خطأ في جلب البيانات: ${error.message}<br>تأكد من إنشاء Collection باسم tickets في الفايربيز</div>`;
     });
-
 </script>
 
 </body>
