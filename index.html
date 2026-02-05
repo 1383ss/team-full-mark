@@ -3,248 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة تحكم المحاضرات</title>
+    <title>Admin Dashboard | لوحة التحكم</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
     <style>
+        /* === ألوان التصميم الأصلي (أسود x برتقالي) === */
         :root {
-            --bg-dark: #0f172a;       /* خلفية الصفحة كحلي غامق جداً */
-            --card-bg: #1e293b;       /* لون الكروت */
-            --primary: #3b82f6;       /* أزرق مودرن بدل البرتقالي */
-            --primary-hover: #2563eb; 
-            --text-main: #e2e8f0;     /* لون الكلام */
-            --text-muted: #94a3b8;    /* لون الكلام الثانوي */
-            --accent-green: #10b981;  /* للأرقام الإيجابية */
-            --accent-red: #ef4444;    /* للتنبيهات */
+            --bg-main: #0a0a0a;         /* أسود قاتم */
+            --card-bg: #111111;         /* أسود افتح سنة */
+            --border-color: #333;       /* لون الحدود الرصاصي */
+            --orange-primary: #ff6600;  /* البرتقالي بتاعك */
+            --text-color: #ddd;
+            --green-accent: #00cc66;
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
+            background-color: var(--bg-main);
+            color: var(--text-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding-bottom: 50px;
+            /* تأثير الخلفية المربعات الخفيفة */
+            background-image: linear-gradient(#1a1a1a 1px, transparent 1px),
+            linear-gradient(90deg, #1a1a1a 1px, transparent 1px);
+            background-size: 30px 30px;
         }
 
-        /* تنسيق كروت الإحصائيات اللي فوق */
+        /* === كروت الإحصائيات اللي فوق === */
         .stat-card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
+            background-color: #1a1e24; /* لون رمادي مزرق غامق زي الصورة */
+            border: 1px solid var(--border-color);
             padding: 20px;
             text-align: center;
-            border-top: 4px solid;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            border-bottom: 4px solid; 
+            margin-bottom: 20px;
         }
-        .stat-card.green { border-color: var(--accent-green); }
-        .stat-card.red { border-color: var(--accent-red); }
-        
-        .stat-number { font-size: 2.5rem; font-weight: bold; margin-bottom: 5px; }
-        .stat-label { color: var(--text-muted); font-size: 1rem; }
+        .stat-card.green { border-bottom-color: var(--green-accent); }
+        .stat-card.red { border-bottom-color: #ff3333; }
 
-        /* أزرار الفلتر (وارد جديد / الأرشيف) */
-        .filter-btn {
-            background: transparent;
-            border: 1px solid var(--text-muted);
-            color: var(--text-muted);
-            padding: 8px 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        .filter-btn.active {
-            background-color: var(--primary);
-            border-color: var(--primary);
-            color: white;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+        .stat-number { font-size: 2.5rem; font-weight: bold; color: #fff; }
+        .stat-label { color: #aaa; font-size: 0.9rem; }
+
+        /* === الفلتر === */
+        .nav-tabs { border-bottom: 1px solid var(--border-color); margin-bottom: 20px; }
+        .nav-link { color: #888; border: none; }
+        .nav-link.active {
+            background-color: var(--orange-primary) !important;
+            color: #000 !important;
+            font-weight: bold;
+            border-radius: 4px 4px 0 0;
         }
 
-        /* تنسيق كارت الرسالة نفسه */
+        /* === كروت الرسائل === */
         .ticket-card {
-            background-color: var(--card-bg);
-            border: none;
-            border-radius: 12px;
-            overflow: hidden;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background-color: var(--card-bg); /* أسود */
+            border: 1px solid var(--border-color); /* برواز رفيع */
+            border-radius: 4px;
+            padding: 0;
+            margin-bottom: 20px;
             position: relative;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
         }
 
-        .ticket-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        /* الشريط الملون الجانبي للكارت */
-        .ticket-card::before {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background-color: var(--primary);
-        }
-
-        .card-header-custom {
+        /* رأس الكارت (التاريخ والكود) */
+        .ticket-header {
             display: flex;
             justify-content: space-between;
-            padding: 15px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 10px 15px;
+            font-size: 0.8rem;
+            color: #666;
+            border-bottom: 1px dashed #333;
         }
 
-        .card-body-custom {
-            padding: 20px 15px;
-        }
+        .ticket-body { padding: 15px; }
 
         .ticket-title {
-            color: #fff;
+            color: var(--orange-primary); /* العنوان برتقالي */
             font-size: 1.1rem;
-            font-weight: bold;
             margin-bottom: 10px;
+            font-weight: bold;
         }
 
         .ticket-msg {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 20px;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .student-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            background-color: #000;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #222;
+            font-size: 0.9rem;
             margin-bottom: 15px;
-            background: rgba(255,255,255,0.03);
-            padding: 8px;
-            border-radius: 6px;
+            color: #bbb;
         }
 
-        .student-icon { color: var(--primary); }
-        .student-code { font-family: monospace; color: var(--accent-green); font-weight: bold; }
+        .student-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        .student-name { color: var(--orange-primary); font-weight: bold; }
+        .student-code { color: #fff; font-family: monospace; background: #222; padding: 2px 6px; border-radius: 4px; }
 
+        /* زرار الرد */
         .btn-reply {
             width: 100%;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
+            background-color: var(--orange-primary);
+            color: #000;
             font-weight: bold;
-            transition: 0.3s;
+            border: none;
+            padding: 10px;
+            border-radius: 0 0 4px 4px; /* كيرف من تحت بس */
         }
-        .btn-reply:hover {
-            background-color: var(--primary-hover);
-        }
+        .btn-reply:hover { background-color: #e65c00; }
 
+        /* تنسيق الكارت اللي في النص (النشط) عشان يبقى مميز */
+        .active-card {
+            border: 1px solid var(--orange-primary);
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.2);
+        }
     </style>
 </head>
 <body>
 
 <div class="container mt-5">
-    
-    <div class="row g-4 mb-5">
+
+    <div class="row">
         <div class="col-md-6">
             <div class="stat-card green">
-                <div class="stat-number text-success">570</div>
-                <div class="stat-label">تم الرد عليهم</div>
+                <div class="stat-number">570</div>
+                <div class="stat-label">تم الرد</div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="stat-card red">
-                <div class="stat-number text-danger">200</div>
+                <div class="stat-number">200</div>
                 <div class="stat-label">رسائل جديدة</div>
             </div>
         </div>
     </div>
 
-    <div class="d-flex justify-content-end gap-2 mb-4">
-        <button class="filter-btn">الأرشيف <i class="fas fa-archive ms-1"></i></button>
-        <button class="filter-btn active">وارد جديد <i class="fas fa-inbox ms-1"></i></button>
+    <div class="d-flex justify-content-end mb-3">
+        <ul class="nav nav-tabs border-0">
+            <li class="nav-item"><a class="nav-link" href="#">الأرشيف</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#">وارد جديد</a></li>
+        </ul>
     </div>
 
-    <div class="row g-4">
+    <div class="row">
         
-        <div class="col-lg-4 col-md-6">
+        <div class="col-md-4">
             <div class="ticket-card">
-                <div class="card-header-custom">
-                    <span><i class="far fa-clock"></i> 20:12 - 03/02/2026</span>
-                    <span>#WOCO_Q</span>
+                <div class="ticket-header">
+                    <span>20:11:55 , 03/02/2026</span>
+                    <span>#tp-ftY</span>
                 </div>
-                <div class="card-body-custom">
-                    <h5 class="ticket-title">طلب المحاضرة الثانية</h5>
-                    <p class="ticket-msg">
-                        ياريت المحاضرة الثانية مناعة د/ أحمد الجوهري، مش بتفتح معايا وبيديني خطأ في السيرفر، أنا محتاجها ضروري عشان الامتحان.
-                    </p>
-                    
-                    <div class="student-info">
-                        <i class="fas fa-user-graduate student-icon"></i>
-                        <span>زياد ياسر</span>
-                        <span class="ms-auto student-code">&lt;/&gt; 461435</span>
+                <div class="ticket-body">
+                    <div class="ticket-title">| المحاضرة الأولى</div>
+                    <div class="ticket-msg">
+                        المحاضرة الأولى والتانية عضوية عبد الجواد مش راضية تفتح..
                     </div>
-
-                    <button class="btn-reply">رد الآن <i class="fas fa-paper-plane me-2"></i></button>
+                    <div class="student-row">
+                        <span class="student-name"><i class="fas fa-user"></i> طالب</span>
+                        <span class="student-code">&lt;/&gt; 169019</span>
+                    </div>
                 </div>
+                <button class="btn-reply">رد الآن</button>
             </div>
         </div>
 
-        <div class="col-lg-4 col-md-6">
-            <div class="ticket-card">
-                <div class="card-header-custom">
-                    <span><i class="far fa-clock"></i> 23:50 - 03/02/2026</span>
-                    <span>#TP-FTY</span>
+        <div class="col-md-4">
+            <div class="ticket-card active-card">
+                <div class="ticket-header">
+                    <span>20:12:27 , 03/02/2026</span>
+                    <span>#WOCQ_Q</span>
                 </div>
-                <div class="card-body-custom">
-                    <h5 class="ticket-title">مشكلة في الكويز</h5>
-                    <p class="ticket-msg">
-                         مفيش ولا محاضرة شغالة، وكل ما أدخل الكود يقولي غير صحيح، ياريت حل بسرعة.
-                    </p>
-                    
-                    <div class="student-info">
-                        <i class="fas fa-user-graduate student-icon"></i>
-                        <span>محمد علي</span>
-                        <span class="ms-auto student-code">&lt;/&gt; 115114</span>
+                <div class="ticket-body">
+                    <div class="ticket-title">ياريت المحاضرة التانية</div>
+                    <div class="ticket-msg">
+                        المحاضرة الثانية احمد الجوهري مش بتفتح.. جاري المراجعة
                     </div>
-
-                    <button class="btn-reply">رد الآن <i class="fas fa-paper-plane me-2"></i></button>
+                    <div class="student-row">
+                        <span class="student-name"><i class="fas fa-user"></i> طالب</span>
+                        <span class="student-code">&lt;/&gt; 461435</span>
+                    </div>
                 </div>
+                <button class="btn-reply">رد الآن</button>
             </div>
         </div>
 
-        <div class="col-lg-4 col-md-6">
+        <div class="col-md-4">
             <div class="ticket-card">
-                <div class="card-header-custom">
-                    <span><i class="far fa-clock"></i> 14:30 - 04/02/2026</span>
-                    <span>#XYZ-12</span>
+                <div class="ticket-header">
+                    <span>23:50:55 , 03/02/2026</span>
+                    <span>#OMUMTJ</span>
                 </div>
-                <div class="card-body-custom">
-                    <h5 class="ticket-title">استفسار بخصوص المذكرة</h5>
-                    <p class="ticket-msg">
-                        هل مذكرة الفصل الثالث نزلت في السنتر ولا لسه؟ ولو نزلت ممكن PDF؟
-                    </p>
-                    
-                    <div class="student-info">
-                        <i class="fas fa-user-graduate student-icon"></i>
-                        <span>سارة أحمد</span>
-                        <span class="ms-auto student-code">&lt;/&gt; 998231</span>
+                <div class="ticket-body">
+                    <div class="ticket-title">طلب</div>
+                    <div class="ticket-msg">
+                        مفيش ولا محاضرة ليه؟ الموقع واقع ولا ايه؟
                     </div>
-
-                    <button class="btn-reply">رد الآن <i class="fas fa-paper-plane me-2"></i></button>
+                    <div class="student-row">
+                        <span class="student-name"><i class="fas fa-user"></i> زياد ياسر</span>
+                        <span class="student-code">&lt;/&gt; 115114</span>
+                    </div>
                 </div>
+                <button class="btn-reply">رد الآن</button>
             </div>
         </div>
 
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
