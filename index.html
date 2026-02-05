@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة تحكم FULL MARK</title>
+    <title>غرفة عمليات FULL MARK</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
@@ -28,31 +28,47 @@
             padding-bottom: 50px;
         }
 
-        /* === الهيدر === */
+        /* === الهيدر وشريط البحث === */
         .page-header {
             background: linear-gradient(135deg, #1e2a4a, #10141d);
-            padding: 30px 20px;
+            padding: 25px 20px;
             border-bottom: 1px solid var(--border-color);
             margin-bottom: 30px;
             border-radius: 0 0 20px 20px;
         }
-        .header-title { font-weight: 700; font-size: 1.8rem; }
 
-        /* === الكروت العلوية === */
+        .search-box {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 10px 20px;
+            color: white;
+            width: 100%;
+            max-width: 400px;
+            transition: 0.3s;
+        }
+        .search-box:focus {
+            background: rgba(255,255,255,0.15);
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(67, 97, 238, 0.3);
+        }
+
+        /* === الكروت === */
         .stat-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 20px;
+            padding: 15px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
         .stat-card.pending { border-bottom: 3px solid var(--warning); }
         .stat-card.replied { border-bottom: 3px solid var(--success); }
-        .stat-card.danger { border-bottom: 3px solid var(--danger); } /* كرت جديد للمتأخر */
+        .stat-card.danger { border-bottom: 3px solid var(--danger); }
 
-        /* === كروت الرسائل === */
+        /* === بطاقة الرسالة === */
         .ticket-card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -63,7 +79,7 @@
         }
         
         .ticket-header {
-            padding: 12px 15px;
+            padding: 10px 15px;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
@@ -92,15 +108,6 @@
             margin-bottom: 12px;
         }
 
-        .student-chip {
-            background: rgba(255,255,255,0.05);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            border: 1px solid var(--border-color);
-        }
-
         .btn-action {
             width: 100%;
             padding: 10px;
@@ -113,47 +120,37 @@
         }
         .btn-action:hover { background: #304ffe; }
 
-        /* === سحر الـ 24 ساعة (الألوان والأنيميشن) === */
-        
-        /* بادج الوقت */
-        .time-badge {
-            font-size: 0.75rem;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
+        /* Timer Styles */
+        .time-badge { font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
         .time-safe { background: rgba(0, 184, 148, 0.15); color: var(--success); }
         .time-warning { background: rgba(253, 203, 110, 0.15); color: var(--warning); }
-        
-        /* الأحمر الخطر */
         .time-danger { 
             background: rgba(255, 71, 87, 0.2); 
             color: var(--danger); 
-            border: 1px solid var(--danger);
-            animation: pulse-red 2s infinite; /* أنيميشن نبض */
+            animation: pulse-red 2s infinite; 
         }
-        
-        /* بوردر الكارت يحمر لو الوقت أزف */
-        .card-danger { border-color: var(--danger) !important; box-shadow: 0 0 10px rgba(255, 71, 87, 0.1); }
+        .card-danger { border-color: var(--danger) !important; }
 
         @keyframes pulse-red {
             0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4); }
             70% { box-shadow: 0 0 0 10px rgba(255, 71, 87, 0); }
             100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
         }
-
     </style>
 </head>
 <body>
 
-<div class="page-header text-center">
-    <h2 class="header-title text-white">
-        <i class="fas fa-user-astronaut me-2"></i> غرفة عمليات FULL MARK
-    </h2>
-    <p class="text-white-50 m-0" style="font-size: 0.9rem;">هدفنا: الرد على الجميع في أقل من 24 ساعة 🚀</p>
+<audio id="notification-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+
+<div class="page-header">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div>
+            <h3 class="text-white fw-bold m-0"><i class="fas fa-headset me-2"></i> FULL MARK</h3>
+            <span class="text-white-50" style="font-size: 0.8rem;">لوحة التحكم المركزية</span>
+        </div>
+        
+        <input type="text" id="search-input" class="search-box" placeholder="بحث بكود الطالب أو الاسم... 🔍">
+    </div>
 </div>
 
 <div class="container">
@@ -163,27 +160,27 @@
             <div class="stat-card pending">
                 <div>
                     <h3 id="pending-count" class="text-warning">0</h3>
-                    <p class="m-0" style="font-size:0.8rem">قيد الانتظار</p>
+                    <p class="m-0 text-muted" style="font-size:0.8rem">قيد الانتظار</p>
                 </div>
-                <i class="fas fa-clock fa-2x text-warning opacity-50"></i>
+                <i class="fas fa-clock fa-2x text-warning opacity-25"></i>
             </div>
         </div>
         <div class="col-md-4">
             <div class="stat-card danger">
                 <div>
                     <h3 id="overdue-count" class="text-danger">0</h3>
-                    <p class="m-0" style="font-size:0.8rem">تجاوزت 24 ساعة (خطر!)</p>
+                    <p class="m-0 text-muted" style="font-size:0.8rem">متأخر جداً</p>
                 </div>
-                <i class="fas fa-exclamation-triangle fa-2x text-danger opacity-50"></i>
+                <i class="fas fa-fire fa-2x text-danger opacity-25"></i>
             </div>
         </div>
         <div class="col-md-4">
             <div class="stat-card replied">
                 <div>
                     <h3 id="replied-count" class="text-success">0</h3>
-                    <p class="m-0" style="font-size:0.8rem">تم الرد بنجاح</p>
+                    <p class="m-0 text-muted" style="font-size:0.8rem">تم الرد</p>
                 </div>
-                <i class="fas fa-check-circle fa-2x text-success opacity-50"></i>
+                <i class="fas fa-check-circle fa-2x text-success opacity-25"></i>
             </div>
         </div>
     </div>
@@ -191,10 +188,9 @@
     <div id="tickets-container" class="row">
         <div class="text-center text-muted py-5">
             <div class="spinner-border text-primary" role="status"></div>
-            <p class="mt-2">جاري فحص التوقيتات...</p>
+            <p class="mt-2">جاري التحميل...</p>
         </div>
     </div>
-
 </div>
 
 <script type="module">
@@ -213,22 +209,43 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const notificationSound = document.getElementById('notification-sound');
+    let isFirstLoad = true; // عشان ميضربش صوت اول ما تفتح الصفحة
 
     const ticketsContainer = document.getElementById('tickets-container');
-    const pendingCountEl = document.getElementById('pending-count');
-    const repliedCountEl = document.getElementById('replied-count');
-    const overdueCountEl = document.getElementById('overdue-count');
+    const searchInput = document.getElementById('search-input');
 
-    // بنجيب الأقدم أولاً (asc) عشان نلحق اللي قرب يخلص وقته
-    // أو نجيب الأحدث (desc) ونميز القديم بلون أحمر.. خلينا في الأحدث عشان تشوف الجديد بردو
+    // دالة البحث (Search Logic)
+    searchInput.addEventListener('keyup', (e) => {
+        const term = e.target.value.toLowerCase();
+        const cards = document.querySelectorAll('.ticket-col');
+        
+        cards.forEach(card => {
+            const text = card.innerText.toLowerCase();
+            if(text.includes(term)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+
     const q = query(collection(db, "tickets"), orderBy("createdAt", "desc"));
 
     onSnapshot(q, (snapshot) => {
+        // تشغيل الصوت لو فيه رسالة جديدة (مش في أول تحميل)
+        if (!isFirstLoad) {
+            snapshot.docChanges().forEach((change) => {
+                if (change.type === "added") {
+                    // تشغيل الصوت
+                    notificationSound.play().catch(e => console.log("Sound blocked by browser"));
+                }
+            });
+        }
+        isFirstLoad = false;
+
         ticketsContainer.innerHTML = '';
-        
-        let pending = 0;
-        let replied = 0;
-        let overdue = 0;
+        let pending = 0, replied = 0, overdue = 0;
 
         if (snapshot.empty) {
             ticketsContainer.innerHTML = `<div class="col-12 text-center text-muted py-5">لا توجد رسائل حالياً</div>`;
@@ -240,48 +257,35 @@
             const ticketId = docSnap.id;
             const isCompleted = ticket.status === 'completed' || ticket.status === 'replied';
 
-            // === 1. منطق حساب الوقت (The Logic) ===
+            // حساب الوقت (SLA Logic)
             let timeBadgeHTML = '';
             let cardClass = '';
             
             if (!isCompleted && ticket.createdAt) {
                 const createdDate = new Date(ticket.createdAt.seconds * 1000);
-                const now = new Date();
-                const diffMs = now - createdDate;
-                const diffHours = diffMs / (1000 * 60 * 60); // فرق الساعات
+                const diffHours = (new Date() - createdDate) / (1000 * 60 * 60);
                 const hoursLeft = 24 - diffHours;
 
                 if (diffHours >= 24) {
-                    // تجاوز 24 ساعة (كارثة)
-                    overdue++;
-                    pending++;
-                    cardClass = 'card-danger'; // البوردر يحمر
-                    timeBadgeHTML = `<span class="time-badge time-danger"><i class="fas fa-skull"></i> متأخر ${Math.floor(diffHours)} ساعة</span>`;
+                    overdue++; pending++;
+                    cardClass = 'card-danger';
+                    timeBadgeHTML = `<span class="time-badge time-danger">متأخر ${Math.floor(diffHours)}س</span>`;
                 } else if (diffHours >= 20) {
-                    // فاضل أقل من 4 ساعات (خطر)
                     pending++;
                     cardClass = 'card-danger';
-                    timeBadgeHTML = `<span class="time-badge time-danger"><i class="fas fa-fire"></i> باقي ${Math.floor(hoursLeft)} س</span>`;
-                } else if (diffHours >= 12) {
-                    // عدى نص الوقت (تحذير)
-                    pending++;
-                    timeBadgeHTML = `<span class="time-badge time-warning"><i class="fas fa-hourglass-half"></i> باقي ${Math.floor(hoursLeft)} س</span>`;
+                    timeBadgeHTML = `<span class="time-badge time-danger">باقي ${Math.floor(hoursLeft)}س</span>`;
                 } else {
-                    // لسه في الأمان
                     pending++;
-                    timeBadgeHTML = `<span class="time-badge time-safe"><i class="fas fa-check"></i> جديد (${Math.floor(hoursLeft)} س متبقية)</span>`;
+                    timeBadgeHTML = `<span class="time-badge time-safe">جديد (${Math.floor(hoursLeft)}س)</span>`;
                 }
             } else if (isCompleted) {
                 replied++;
-                timeBadgeHTML = `<span class="badge bg-success"><i class="fas fa-check-double"></i> تم الحل</span>`;
+                timeBadgeHTML = `<span class="badge bg-success">تم الحل</span>`;
             }
 
-            // === 2. الرسم ===
-            const dateObj = ticket.createdAt ? new Date(ticket.createdAt.seconds * 1000) : new Date();
-            const dateString = dateObj.toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'});
-
+            // رسم الكارت (ضفنا كلاس ticket-col عشان البحث يلاقيه)
             const html = `
-                <div class="col-lg-4 col-md-6" style="${isCompleted ? 'opacity:0.5' : ''}">
+                <div class="col-lg-4 col-md-6 ticket-col" style="${isCompleted ? 'opacity:0.5' : ''}">
                     <div class="ticket-card ${cardClass}">
                         <div class="ticket-header">
                             <span style="font-family:monospace">#${ticketId.slice(0,4)}</span>
@@ -294,13 +298,13 @@
                             
                             <div class="d-flex justify-content-between text-muted" style="font-size:0.8rem">
                                 <span><i class="fas fa-user ms-1"></i> ${ticket.studentName || 'طالب'}</span>
-                                <span><i class="far fa-clock ms-1"></i> ${dateString}</span>
+                                <span style="font-family:monospace" class="text-white"><i class="fas fa-code"></i> ${ticket.studentCode || ''}</span>
                             </div>
                         </div>
 
                         ${!isCompleted ? `
                         <button class="btn-action" onclick="markAsReplied('${ticketId}')">
-                            رد وإغلاق التذكرة
+                            رد سريع <i class="fas fa-paper-plane ms-2"></i>
                         </button>
                         ` : ''}
                     </div>
@@ -310,21 +314,19 @@
         });
 
         // تحديث العدادات
-        pendingCountEl.innerText = pending;
-        repliedCountEl.innerText = replied;
-        overdueCountEl.innerText = overdue;
+        document.getElementById('pending-count').innerText = pending;
+        document.getElementById('replied-count').innerText = replied;
+        document.getElementById('overdue-count').innerText = overdue;
     });
 
     window.markAsReplied = async (id) => {
-        const reply = prompt("اكتب الرد للطالب:");
+        const reply = prompt("اكتب الرد:");
         if (reply) {
-            try {
-                await updateDoc(doc(db, "tickets", id), {
-                    status: 'replied',
-                    adminReply: reply,
-                    repliedAt: new Date()
-                });
-            } catch (e) { alert("حدث خطأ"); }
+            await updateDoc(doc(db, "tickets", id), {
+                status: 'replied',
+                adminReply: reply,
+                repliedAt: new Date()
+            });
         }
     }
 </script>
