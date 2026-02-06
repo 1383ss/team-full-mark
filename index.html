@@ -2,407 +2,473 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>لوحة القيادة | Full Mark</title>
-    
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FULL MARK | Control Center</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg-main: #0f172a;      /* كحلي غامق للخلفية */
-            --card-bg: #1e293b;      /* كحلي أفتح للكروت */
-            --text-white: #ffffff;
-            --text-gray: #cbd5e1;
-            --gold: #f59e0b;         /* ذهبي للعناوين المهمة */
-            --blue-btn: #3b82f6;     /* أزرار زرقاء زاهية */
-            --danger: #ef4444;
-            --success: #10b981;
+            --bg-deep: #0a0a0c;
+            --card-glass: rgba(30, 30, 36, 0.7);
+            --primary-glow: #00d2ff;
+            --accent-purple: #9d50bb;
+            --success-neon: #00ff88;
+            --danger-neon: #ff0055;
+            --warning-neon: #ffcc00;
+            --text-silver: #cfd8dc;
         }
 
         body {
-            background-color: var(--bg-main);
+            background: radial-gradient(circle at top right, #1a1a2e, #0a0a0c);
+            color: var(--text-silver);
             font-family: 'Cairo', sans-serif;
-            color: var(--text-white);
-            padding-bottom: 50px;
+            min-height: 100vh;
+            padding-bottom: 30px;
+            overflow-x: hidden;
         }
 
-        /* === الهيدر === */
-        .royal-nav {
-            background: #1e293b;
-            border-bottom: 2px solid var(--gold);
-            padding: 15px 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        /* === Custom Scrollbar === */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0c; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-glow); }
+
+        /* === Header & Glassmorphism === */
+        .glass-header {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px 0;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .logo-section h3 {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, #fff, var(--primary-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .owner-chip {
+            background: linear-gradient(90deg, rgba(157, 80, 187, 0.1), rgba(0, 210, 255, 0.1));
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+        }
+
+        .server-status {
+            font-size: 0.75rem;
+            color: var(--success-neon);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success-neon);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
+        }
+
+        /* === Stats Cards === */
+        .stat-box {
+            background: var(--card-glass);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-box:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.15); }
+        .stat-box i { font-size: 2.5rem; position: absolute; left: -10px; bottom: -10px; opacity: 0.1; }
+        
+        .stat-val { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; font-weight: 700; }
+
+        /* === Tickets Style === */
+        .ticket-wrapper {
+            animation: fadeIn 0.6s ease backwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modern-card {
+            background: var(--card-glass);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            overflow: hidden;
+            height: 100%;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modern-card:hover {
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            border-color: var(--primary-glow);
+        }
+
+        .card-top {
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.02);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .brand-title {
-            font-weight: 900;
-            font-size: 1.4rem;
-            color: var(--text-white);
+
+        .card-mid { padding: 20px; }
+        
+        .msg-bubble {
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-right: 3px solid var(--primary-glow);
+            font-size: 0.95rem;
+            color: #eee;
+        }
+
+        .student-info {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+        }
+
+        .btn-reply-neon {
+            background: linear-gradient(45deg, var(--primary-glow), var(--accent-purple));
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            font-weight: 700;
+            transition: 0.3s;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        .brand-title i { color: var(--gold); margin-left: 10px; }
+        .btn-reply-neon:hover { opacity: 0.9; letter-spacing: 2px; }
 
-        /* === عدادات الإحصائيات === */
-        .stats-row {
-            display: flex;
-            gap: 15px;
-            padding: 20px;
-            overflow-x: auto;
-        }
-        .stat-box {
-            background: var(--card-bg);
-            min-width: 120px;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
-        .stat-num {
-            font-size: 2rem;
-            font-weight: 900;
-            display: block;
-            line-height: 1.1;
-        }
-        .stat-title { font-size: 0.9rem; color: var(--text-gray); font-weight: 700; }
-
-        /* === كروت الرسائل === */
-        .tickets-container { padding: 10px 20px; }
-
-        .ticket-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            margin-bottom: 20px;
-            border: 1px solid #334155;
-            overflow: hidden;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s;
-        }
-        .ticket-card:active { transform: scale(0.98); }
-
-        /* الشريط الملون الجانبي */
-        .status-bar { height: 6px; width: 100%; }
-        .bar-new { background: var(--gold); box-shadow: 0 0 10px var(--gold); }
-        .bar-late { background: var(--danger); box-shadow: 0 0 10px var(--danger); }
-        .bar-done { background: var(--success); }
-
-        .card-content { padding: 20px; }
-
-        /* رأس الكارت */
-        .student-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .student-name {
-            font-size: 1.2rem;
-            font-weight: 900;
-            color: var(--text-white);
-        }
-        .student-code {
-            background: rgba(255,255,255,0.1);
-            padding: 5px 10px;
-            border-radius: 8px;
-            font-family: monospace;
-            color: var(--gold);
-            font-size: 1rem;
-            font-weight: bold;
-        }
-
-        /* صندوق الرسالة داخل الكارت */
-        .msg-preview {
-            background: #0f172a; /* لون أغمق للتباين */
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #334155;
-            color: #e2e8f0;
-            font-size: 1.1rem; /* تكبير الخط */
-            font-weight: 600;  /* توضيح الخط */
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        /* الأزرار */
-        .actions-row {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .btn-view {
-            background: transparent;
-            border: 2px solid var(--text-gray);
-            color: var(--text-gray);
-            flex: 1;
-            padding: 12px;
+        /* === Status Badges === */
+        .status-badge {
+            font-size: 0.7rem;
+            padding: 5px 12px;
             border-radius: 10px;
             font-weight: 700;
-            font-size: 1rem;
+            text-transform: uppercase;
         }
-        
-        .btn-reply {
-            background: var(--blue-btn);
-            border: none;
-            color: white;
-            flex: 2; /* الزرار ده أعرض */
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 1rem;
-            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
-        }
+        .b-urgent { background: rgba(255, 0, 85, 0.1); color: var(--danger-neon); border: 1px solid var(--danger-neon); }
+        .b-new { background: rgba(0, 210, 255, 0.1); color: var(--primary-glow); border: 1px solid var(--primary-glow); }
+        .b-done { background: rgba(0, 255, 136, 0.1); color: var(--success-neon); border: 1px solid var(--success-neon); }
 
-        /* أرشيف */
-        .archive-title {
-            color: var(--text-gray);
-            font-weight: 700;
-            margin: 30px 20px 15px;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 10px;
+        /* Search Box Redesign */
+        .search-container { position: relative; max-width: 400px; width: 100%; }
+        .search-container i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #666; }
+        .custom-search {
+            background: rgba(255,255,255,0.05) !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            border-radius: 50px !important;
+            padding: 10px 45px 10px 20px !important;
+            color: white !important;
+            transition: 0.3s;
         }
-        .archived-item {
-            opacity: 0.6;
-            filter: grayscale(0.5);
-        }
+        .custom-search:focus { border-color: var(--primary-glow) !important; box-shadow: 0 0 15px rgba(0, 210, 255, 0.2) !important; }
 
         /* Modal */
         .modal-content {
-            background: var(--card-bg);
-            color: white;
-            border: 1px solid var(--gold);
-            border-radius: 20px;
-        }
-        .modal-header, .modal-footer { border-color: #334155; }
-        .form-control {
-            background: #0f172a;
-            border: 1px solid #334155;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-        .form-control:focus {
-            background: #0f172a;
-            color: white;
-            border-color: var(--blue-btn);
-            box-shadow: none;
+            background: #15151b;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 25px;
         }
     </style>
 </head>
 <body>
 
-    <nav class="royal-nav">
-        <div class="brand-title"><i class="fas fa-crown"></i> Full Mark</div>
-        <div style="font-size:0.9rem; font-weight:bold; color:var(--text-gray)">لوحة التحكم</div>
-    </nav>
+<audio id="notification-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
 
-    <div class="stats-row">
-        <div class="stat-box">
-            <span class="stat-num" style="color: var(--gold)" id="pending-count">0</span>
-            <span class="stat-title">وارد</span>
+<header class="glass-header">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div class="logo-section">
+            <h3><i class="fas fa-terminal me-2"></i>FULL MARK</h3>
+            <div class="server-status">
+                <div class="pulse-dot"></div>
+                <span>Live Operations Center</span>
+            </div>
         </div>
-        <div class="stat-box">
-            <span class="stat-num" style="color: var(--danger)" id="overdue-count">0</span>
-            <span class="stat-title">متأخر</span>
+
+        <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" id="search-input" class="form-control custom-search" placeholder="ابحث باسم الطالب أو الكود...">
         </div>
-        <div class="stat-box">
-            <span class="stat-num" style="color: var(--success)" id="replied-count">0</span>
-            <span class="stat-title">منجز</span>
+
+        <div class="owner-chip">
+            <span class="text-muted">Commanding Officer:</span>
+            <span class="ms-1 fw-bold text-white">ELGIZAWY <i class="fas fa-crown text-warning"></i></span>
         </div>
     </div>
+</header>
 
-    <div class="tickets-container" id="active-tickets">
-        <div class="text-center py-5 text-muted fw-bold">جاري تحميل البيانات...</div>
-    </div>
-
-    <div class="archive-title"><i class="fas fa-check-double me-2"></i> تم الرد (اليوم)</div>
-    <div class="tickets-container" id="archive-tickets"></div>
-
-    <div class="modal fade" id="replyModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="modal-student-name">رد على الطالب</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="p-3 mb-3 rounded" style="background: rgba(255,255,255,0.05); border: 1px dashed #555;">
-                        <small class="text-muted d-block mb-1">رسالة الطالب:</small>
-                        <p id="full-message-view" class="m-0 fw-bold"></p>
+<div class="container mt-4">
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="stat-box">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1">الطلبات المعلقة</p>
+                        <div id="pending-count" class="stat-val" style="color: var(--warning-neon)">0</div>
                     </div>
-
-                    <textarea id="reply-text" class="form-control" rows="5" placeholder="اكتب الرد هنا..."></textarea>
-                    
-                    <div class="mt-3 d-flex gap-2 justify-content-center">
-                        <button class="btn btn-sm btn-outline-light fw-bold" onclick="fillReply('تم التفعيل ✅')">تم التفعيل</button>
-                        <button class="btn btn-sm btn-outline-light fw-bold" onclick="fillReply('كود خطأ ❌')">كود خطأ</button>
-                        <button class="btn btn-sm btn-outline-light fw-bold" onclick="fillReply('تم الحل 🔄')">تم الحل</button>
+                    <div class="icon-circle shadow" style="background: rgba(255, 204, 0, 0.1); padding: 15px; border-radius: 15px;">
+                        <i class="fas fa-hourglass-half text-warning opacity-100" style="position:static; font-size: 1.5rem;"></i>
                     </div>
-
-                    <input type="hidden" id="current-ticket-id">
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary w-100 fw-bold py-2 fs-5" onclick="submitReply()">إرسال الرد 🚀</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-box">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1">حالات الخطر</p>
+                        <div id="overdue-count" class="stat-val" style="color: var(--danger-neon)">0</div>
+                    </div>
+                    <div class="icon-circle shadow" style="background: rgba(255, 0, 85, 0.1); padding: 15px; border-radius: 15px;">
+                        <i class="fas fa-radiation text-danger opacity-100" style="position:static; font-size: 1.5rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-box">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1">تم إنجازه</p>
+                        <div id="replied-count" class="stat-val" style="color: var(--success-neon)">0</div>
+                    </div>
+                    <div class="icon-circle shadow" style="background: rgba(0, 255, 136, 0.1); padding: 15px; border-radius: 15px;">
+                        <i class="fas fa-check-double text-success opacity-100" style="position:static; font-size: 1.5rem;"></i>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    <div id="tickets-container" class="row g-4">
+        <div class="text-center text-white py-5">
+            <div class="spinner-border text-info" role="status"></div>
+            <p class="mt-3 fw-bold">Connecting to Neural Link...</p>
+        </div>
+    </div>
+</div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDH3cy-jkDphnPGzHUwd4rd9ogZDY7uUgM",
-            authDomain: "quest-full.firebaseapp.com",
-            databaseURL: "https://quest-full-default-rtdb.firebaseio.com", 
-            projectId: "quest-full",
-            storageBucket: "quest-full.firebasestorage.app",
-            messagingSenderId: "501161882802",
-            appId: "1:501161882802:web:08d6230eb09741a5c8c5ab"
-        };
+<div class="modal fade" id="replyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="modalTitle">الرد على الطلب</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <label class="text-muted small mb-3">اختر رد جاهز:</label>
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <button class="btn btn-sm btn-outline-info rounded-pill" onclick="fillReply('تم تفعيل المحاضرة بنجاح، بالتوفيق! ✅')">تفعيل ✅</button>
+                    <button class="btn btn-sm btn-outline-danger rounded-pill" onclick="fillReply('الكود غير صحيح، يرجى التأكد وإعادة المحاولة ❌')">كود خطأ ❌</button>
+                    <button class="btn btn-sm btn-outline-warning rounded-pill" onclick="fillReply('جاري مراجعة طلبك مع الإدارة التقنية ⏳')">مراجعة ⏳</button>
+                </div>
+                
+                <textarea id="reply-text" class="form-control bg-dark text-white border-secondary" rows="4" placeholder="اكتب ردك الاحترافي هنا..."></textarea>
+                <input type="hidden" id="current-ticket-id">
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-link text-muted text-decoration-none" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary px-4 rounded-pill fw-bold" onclick="submitReply()">إرسال التحديث 🚀</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-        const activeDiv = document.getElementById('active-tickets');
-        const archiveDiv = document.getElementById('archive-tickets');
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDH3cy-jkDphnPGzHUwd4rd9ogZDY7uUgM",
+      authDomain: "quest-full.firebaseapp.com",
+      databaseURL: "https://quest-full-default-rtdb.firebaseio.com", 
+      projectId: "quest-full",
+      storageBucket: "quest-full.firebasestorage.app",
+      messagingSenderId: "501161882802",
+      appId: "1:501161882802:web:08d6230eb09741a5c8c5ab"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    
+    const notificationSound = document.getElementById('notification-sound');
+    let isFirstLoad = true; 
+
+    const ticketsContainer = document.getElementById('tickets-container');
+    const searchInput = document.getElementById('search-input');
+    
+    const replyModal = new bootstrap.Modal(document.getElementById('replyModal'));
+    const replyText = document.getElementById('reply-text');
+    const currentTicketIdInput = document.getElementById('current-ticket-id');
+    const modalTitle = document.getElementById('modalTitle');
+
+    searchInput.addEventListener('keyup', (e) => {
+        const term = e.target.value.toLowerCase();
+        const cards = document.querySelectorAll('.ticket-wrapper');
+        cards.forEach(card => {
+            const text = card.innerText.toLowerCase();
+            card.style.display = text.includes(term) ? 'block' : 'none';
+        });
+    });
+
+    window.openReplyModal = (id, studentName) => {
+        currentTicketIdInput.value = id;
+        modalTitle.innerText = `الرد على: ${studentName}`;
+        replyText.value = ''; 
+        replyModal.show();
+    }
+
+    window.fillReply = (text) => {
+        replyText.value = text;
+    }
+
+    window.submitReply = () => {
+        const id = currentTicketIdInput.value;
+        const reply = replyText.value;
         
-        // Modal Setup
-        const replyModal = new bootstrap.Modal(document.getElementById('replyModal'));
-        const replyInput = document.getElementById('reply-text');
-        const ticketIdInput = document.getElementById('current-ticket-id');
-        const fullMsgView = document.getElementById('full-message-view');
-        const modalTitle = document.getElementById('modal-student-name');
+        if (!reply) { alert("أدخل نص الرد أولاً!"); return; }
 
-        window.openReply = (id, name, message) => {
-            ticketIdInput.value = id;
-            modalTitle.innerText = name;
-            fullMsgView.innerText = message; // نعرض الرسالة جوه المودال كمان
-            replyInput.value = '';
-            replyModal.show();
-        };
+        const ticketRef = ref(db, 'support_tickets/' + id);
+        update(ticketRef, {
+            status: 'replied',
+            adminReply: reply,
+            repliedAt: Date.now() 
+        }).then(() => {
+            replyModal.hide();
+        }).catch((error) => {
+            console.error(error);
+            alert("فشل في تحديث الحالة");
+        });
+    }
 
-        // زرار عرض الرسالة فقط (بيفتح نفس المودال بس للقراءة والرد)
-        window.viewMessage = (id, name, message) => {
-             openReply(id, name, message);
-        };
+    const ticketsRef = ref(db, 'support_tickets');
 
-        window.fillReply = (txt) => { replyInput.value = txt; };
+    onValue(ticketsRef, (snapshot) => {
+        const data = snapshot.val();
+        
+        if (!isFirstLoad && data) {
+            notificationSound.play().catch(e => console.log("Audio play deferred"));
+        }
+        isFirstLoad = false;
 
-        window.submitReply = () => {
-            const id = ticketIdInput.value;
-            const reply = replyInput.value;
-            if(!reply) return alert("اكتب رد!");
+        ticketsContainer.innerHTML = '';
+        let pending = 0, replied = 0, overdue = 0;
 
-            update(ref(db, `support_tickets/${id}`), {
-                status: 'replied',
-                adminReply: reply,
-                repliedAt: Date.now()
-            }).then(() => replyModal.hide());
-        };
+        if (!data) {
+            ticketsContainer.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <i class="fas fa-shield-check fa-5x mb-4 text-success opacity-50"></i>
+                    <h2 class="fw-bold">النظام نظيف تماماً!</h2>
+                    <p class="text-muted">جميع الطلبات تم التعامل معها بنجاح.</p>
+                </div>`;
+            updateStats(0, 0, 0);
+            return;
+        }
 
-        // جلب البيانات
-        onValue(ref(db, 'support_tickets'), (snapshot) => {
-            const data = snapshot.val();
-            activeDiv.innerHTML = '';
-            archiveDiv.innerHTML = '';
+        let ticketsArray = [];
+        for (let id in data) {
+            ticketsArray.push({ id, ...data[id] });
+        }
 
-            if (!data) {
-                activeDiv.innerHTML = `<div class="text-center py-5"><i class="fas fa-check-circle fa-4x text-success mb-3"></i><h3 class="fw-bold">كله تمام!</h3></div>`;
-                return;
+        ticketsArray.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+        ticketsArray.forEach((ticket, index) => {
+            const ticketId = ticket.id;
+            const isCompleted = ticket.status === 'completed' || ticket.status === 'replied';
+
+            let statusHTML = '';
+            let cardEffect = '';
+            
+            if (!isCompleted) {
+                let createdTime = ticket.createdAt;
+                const diffHours = (new Date() - new Date(createdTime)) / (1000 * 60 * 60);
+
+                if (diffHours >= 24) {
+                    overdue++; pending++;
+                    statusHTML = `<span class="status-badge b-urgent">متأخر جداً !!</span>`;
+                    cardEffect = 'border-danger shadow-danger';
+                } else {
+                    pending++;
+                    statusHTML = `<span class="status-badge b-new">طلب جديد</span>`;
+                }
+            } else {
+                replied++;
+                statusHTML = `<span class="status-badge b-done">تم الرد</span>`;
             }
 
-            let tickets = Object.keys(data).map(k => ({id: k, ...data[k]}));
-            
-            // ترتيب: الأحدث فوق
-            tickets.sort((a, b) => {
-                let tA = a.createdAt?.seconds ? a.createdAt.seconds * 1000 : (a.createdAt || 0);
-                let tB = b.createdAt?.seconds ? b.createdAt.seconds * 1000 : (b.createdAt || 0);
-                return tB - tA;
-            });
-
-            let pending = 0, overdue = 0, replied = 0;
-            const now = Date.now();
-
-            tickets.forEach(t => {
-                let created = t.createdAt?.seconds ? t.createdAt.seconds * 1000 : (t.createdAt || 0);
-                let diff = (now - created) / 36e5; // hours
-
-                if (t.status === 'replied') {
-                    // الأرشيف (لمدة 24 ساعة فقط)
-                    if ((now - (t.repliedAt || 0)) < 86400000) {
-                        replied++;
-                        archiveDiv.innerHTML += `
-                            <div class="ticket-card archived-item">
-                                <div class="status-bar bar-done"></div>
-                                <div class="card-content">
-                                    <div class="student-header mb-1">
-                                        <span class="student-name" style="font-size:1rem">${t.studentName}</span>
-                                        <span class="badge bg-success">تم الرد</span>
-                                    </div>
-                                    <p class="text-muted small m-0 text-truncate">${t.message}</p>
-                                </div>
-                            </div>
-                        `;
-                    }
-                } else {
-                    // الرسائل الجديدة
-                    pending++;
-                    let barClass = 'bar-new';
-                    let statusLabel = 'جديد';
-                    
-                    if (diff > 24) {
-                        overdue++;
-                        barClass = 'bar-late';
-                        statusLabel = 'متأخر';
-                    }
-
-                    // هنا بنعمل Encode للرسالة عشان تتبعت للدالة صح لو فيها علامات غريبة
-                    let safeMsg = t.message.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-
-                    activeDiv.innerHTML += `
-                        <div class="ticket-card">
-                            <div class="status-bar ${barClass}"></div>
-                            <div class="card-content">
-                                <div class="student-header">
-                                    <div>
-                                        <div class="student-name">${t.studentName}</div>
-                                        <span class="badge ${diff > 24 ? 'bg-danger' : 'bg-warning text-dark'}">${statusLabel}</span>
-                                    </div>
-                                    <span class="student-code">${t.studentCode || 'N/A'}</span>
-                                </div>
-                                
-                                <div class="msg-preview">
-                                    ${t.message}
-                                </div>
-
-                                <div class="actions-row">
-                                    <button class="btn-view" onclick="viewMessage('${t.id}', '${t.studentName}', '${safeMsg}')">
-                                        <i class="far fa-eye"></i> عرض
-                                    </button>
-                                    <button class="btn-reply" onclick="openReply('${t.id}', '${t.studentName}', '${safeMsg}')">
-                                        <i class="fas fa-reply"></i> رد الآن
-                                    </button>
-                                </div>
+            const html = `
+                <div class="col-lg-4 col-md-6 ticket-wrapper" style="animation-delay: ${index * 0.1}s; ${isCompleted ? 'opacity:0.5' : ''}">
+                    <div class="modern-card ${cardEffect}">
+                        <div class="card-top">
+                            <span class="small opacity-50" style="font-family:Orbitron">ID: ${ticketId.slice(-6)}</span>
+                            ${statusHTML}
+                        </div>
+                        
+                        <div class="card-mid">
+                            <h6 class="fw-bold text-info mb-3">${ticket.subject || 'دعم فني عام'}</h6>
+                            <div class="msg-bubble">${ticket.message || 'لا يوجد نص'}</div>
+                            
+                            <div class="student-info">
+                                <span><i class="fas fa-user-graduate me-1 text-primary"></i> ${ticket.studentName || 'غير معروف'}</span>
+                                <span class="fw-bold" style="color:var(--primary-glow)">#${ticket.studentCode || '000'}</span>
                             </div>
                         </div>
-                    `;
-                }
-            });
 
-            document.getElementById('pending-count').innerText = pending;
-            document.getElementById('overdue-count').innerText = overdue;
-            document.getElementById('replied-count').innerText = replied;
+                        ${!isCompleted ? `
+                        <button class="btn-reply-neon" onclick="openReplyModal('${ticketId}', '${ticket.studentName || 'الطالب'}')">
+                            فتح الاتصال <i class="fas fa-reply ms-2"></i>
+                        </button>
+                        ` : `
+                        <div class="p-3 text-center small text-success bg-dark">
+                             <i class="fas fa-check-circle me-1"></i> تمت الاستجابة للطلب
+                        </div>
+                        `}
+                    </div>
+                </div>
+            `;
+            ticketsContainer.innerHTML += html;
         });
-    </script>
+
+        updateStats(pending, replied, overdue);
+    });
+
+    function updateStats(p, r, o) {
+        document.getElementById('pending-count').innerText = p;
+        document.getElementById('replied-count').innerText = r;
+        document.getElementById('overdue-count').innerText = o;
+    }
+</script>
+
 </body>
 </html>
