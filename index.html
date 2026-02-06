@@ -38,7 +38,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
-        /* ستايل اسم المالك الجديد */
         .owner-badge {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -47,14 +46,6 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            transition: 0.3s;
-            cursor: default;
-        }
-        .owner-badge:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            border-color: var(--primary);
         }
         .elgizawy-text {
             font-family: 'Montserrat', sans-serif;
@@ -63,151 +54,103 @@
             background: linear-gradient(to right, #fff, #4cc9f0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(76, 201, 240, 0.3);
-            font-size: 1.1rem;
         }
 
-        .search-box {
-            background: #333;
-            border: 1px solid #555;
-            border-radius: 30px;
-            padding: 10px 25px;
-            color: white;
-            width: 100%;
-            max-width: 350px;
-            font-size: 0.95rem;
-        }
-        .search-box:focus {
-            background: #444;
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 10px rgba(76, 201, 240, 0.4);
-        }
-
-        /* === الكروت === */
+        /* === كروت الإحصائيات === */
         .stat-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 20px;
+            padding: 15px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
-        .stat-card.pending { border-bottom: 4px solid var(--warning); }
-        .stat-card.replied { border-bottom: 4px solid var(--success); }
-        .stat-card.danger { border-bottom: 4px solid var(--danger); }
+        .stat-number { font-size: 2rem; font-weight: 800; }
 
-        .stat-number { font-size: 2.5rem; font-weight: 800; line-height: 1; }
-        .stat-label { font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px; }
-
-        /* === تذاكر الرسائل === */
-        .ticket-card {
+        /* === تذاكر الرسائل (التصميم الجديد الكبير) === */
+        .ticket-card-large {
             background: var(--card-bg);
-            border-radius: 12px;
+            border-radius: 16px;
             border: 1px solid var(--border-color);
-            margin-bottom: 20px;
-            position: relative;
+            margin-bottom: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
         }
+        .ticket-card-large:hover { transform: translateY(-5px); }
         
         .ticket-header {
-            padding: 12px 15px;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.03);
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.9rem;
-            background: rgba(255,255,255,0.03);
-            color: #b0b3b8;
         }
 
-        .ticket-body { padding: 18px; }
+        .ticket-body { padding: 25px; }
 
         .ticket-subject {
-            font-size: 1.1rem;
+            font-size: 1.4rem; /* تكبير العنوان */
             font-weight: 700;
             color: var(--primary);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             display: block;
         }
 
         .ticket-msg {
-            color: #eee;
-            background: rgba(0,0,0,0.4);
-            padding: 12px;
-            border-radius: 8px;
+            color: #fff;
+            background: rgba(255,255,255,0.05);
+            padding: 20px; /* تكبير المساحة */
+            border-radius: 10px;
             border: 1px solid #444;
-            margin-bottom: 15px;
-            line-height: 1.6;
+            font-size: 1.1rem; /* تكبير خط الرسالة */
+            line-height: 1.8;
+            margin-bottom: 20px;
         }
 
         .btn-action {
             width: 100%;
-            padding: 12px;
+            padding: 15px;
             background: var(--primary);
             color: #000;
             border: none;
-            border-radius: 0 0 12px 12px;
+            font-size: 1.1rem;
             font-weight: 800;
-            transition: 0.3s;
+            cursor: pointer;
         }
         .btn-action:hover { background: #3db8df; }
 
-        /* === تصميم المودال === */
-        .modal-content {
-            background-color: #1e1e24;
-            color: white;
-            border: 1px solid #444;
+        /* === كروت الأرشيف (تم الرد) === */
+        .ticket-card-done {
+            background: rgba(30, 30, 36, 0.6);
+            border: 1px solid #333;
+            border-right: 4px solid var(--success);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            opacity: 0.8;
         }
-        .modal-header, .modal-footer { border-color: #333; }
-        .form-control {
-            background-color: #121212;
-            border-color: #444;
-            color: white;
-        }
-        .form-control:focus {
-            background-color: #121212;
-            color: white;
-            border-color: var(--primary);
-            box-shadow: none;
-        }
-        
+        .ticket-card-done h6 { margin: 0; color: #aaa; font-size: 0.9rem; }
+        .ticket-card-done p { margin: 5px 0 0; font-size: 0.8rem; color: #666; }
+
+        /* === المودال === */
+        .modal-content { background-color: #1e1e24; color: white; border: 1px solid #444; }
+        .form-control { background-color: #121212; border-color: #444; color: white; }
+        .form-control:focus { background-color: #121212; color: white; border-color: var(--primary); }
         .quick-reply-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid #444;
-            color: #ddd;
-            font-size: 0.85rem;
-            padding: 5px 10px;
-            border-radius: 20px;
-            transition: 0.2s;
-            cursor: pointer;
-            margin-left: 5px;
-            margin-bottom: 5px;
-            display: inline-block;
+            background: rgba(255,255,255,0.05); border: 1px solid #444; color: #ddd;
+            font-size: 0.85rem; padding: 5px 10px; border-radius: 20px; cursor: pointer; display: inline-block; margin: 3px;
         }
-        .quick-reply-btn:hover {
-            background: var(--primary);
-            color: black;
-            border-color: var(--primary);
-        }
+        .quick-reply-btn:hover { background: var(--primary); color: black; }
 
         /* Timer Styles */
-        .time-badge { font-size: 0.8rem; padding: 4px 10px; border-radius: 6px; font-weight: bold; }
-        .time-safe { background: rgba(0, 230, 118, 0.2); color: var(--success); border: 1px solid var(--success); }
-        .time-warning { background: rgba(255, 234, 0, 0.2); color: var(--warning); border: 1px solid var(--warning); }
-        .time-danger { 
-            background: rgba(255, 23, 68, 0.2); 
-            color: var(--danger); 
-            border: 1px solid var(--danger);
-            animation: pulse-red 1.5s infinite; 
-        }
-        .card-danger { border-color: var(--danger) !important; box-shadow: 0 0 15px rgba(255, 23, 68, 0.3); }
-        @keyframes pulse-red {
-            0% { box-shadow: 0 0 0 0 rgba(255, 23, 68, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 23, 68, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 23, 68, 0); }
-        }
+        .time-badge { font-size: 0.8rem; padding: 5px 12px; border-radius: 6px; font-weight: bold; }
+        .time-safe { background: rgba(0, 230, 118, 0.2); color: var(--success); }
+        .time-danger { background: rgba(255, 23, 68, 0.2); color: var(--danger); animation: pulse-red 1.5s infinite; }
+        .card-danger { border-color: var(--danger) !important; box-shadow: 0 0 15px rgba(255, 23, 68, 0.2); }
+        @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(255, 23, 68, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(255, 23, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 23, 68, 0); } }
     </style>
 </head>
 <body>
@@ -216,92 +159,80 @@
 
 <div class="page-header">
     <div class="container d-flex flex-wrap justify-content-between align-items-center gap-3">
-        
         <div class="d-flex align-items-center gap-3">
-            <div>
-                <h3 class="text-white fw-bold m-0"><i class="fas fa-satellite-dish me-2 text-info"></i> FULL MARK</h3>
-                <span style="color: #bbb; font-size: 0.9rem;">غرفة الدعم الفني </span>
-            </div>
+            <h3 class="text-white fw-bold m-0"><i class="fas fa-satellite-dish me-2 text-info"></i> FULL MARK</h3>
         </div>
-
         <div class="owner-badge">
-            <span class="text-muted" style="font-size: 0.75rem;">owner</span>
-            <span class="elgizawy-text">ELGIZAWY <i class="fas fa-crown text-warning ms-1" style="-webkit-text-fill-color: #ffd700;"></i></span>
+            <span class="elgizawy-text">ELGIZAWY <i class="fas fa-crown text-warning ms-1"></i></span>
         </div>
-        
-        <input type="text" id="search-input" class="search-box" placeholder="🔎 ابحث باسم الطالب أو الكود...">
+        <input type="text" id="search-input" class="form-control" style="max-width: 300px; background: #333; color: #fff; border:none;" placeholder="🔎 بحث...">
     </div>
 </div>
 
-<div class="container">
-    
+<div class="container-fluid px-4">
     <div class="row g-3 mb-4">
         <div class="col-md-4">
-            <div class="stat-card pending">
-                <div>
-                    <div id="pending-count" class="stat-number" style="color: var(--warning)">0</div>
-                    <div class="stat-label">قيد الانتظار</div>
-                </div>
-                <i class="fas fa-clock fa-2x" style="color: var(--warning); opacity: 0.8"></i>
+            <div class="stat-card">
+                <div><div id="pending-count" class="stat-number" style="color: var(--warning)">0</div><div class="text-muted">قيد الانتظار</div></div>
+                <i class="fas fa-clock fa-2x text-warning"></i>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="stat-card danger">
-                <div>
-                    <div id="overdue-count" class="stat-number" style="color: var(--danger)">0</div>
-                    <div class="stat-label">متأخر جداً (خطر)</div>
-                </div>
-                <i class="fas fa-fire fa-2x" style="color: var(--danger); opacity: 0.8"></i>
+            <div class="stat-card">
+                <div><div id="overdue-count" class="stat-number" style="color: var(--danger)">0</div><div class="text-muted">متأخر جداً</div></div>
+                <i class="fas fa-fire fa-2x text-danger"></i>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="stat-card replied">
-                <div>
-                    <div id="replied-count" class="stat-number" style="color: var(--success)">0</div>
-                    <div class="stat-label">تم الرد</div>
-                </div>
-                <i class="fas fa-check-circle fa-2x" style="color: var(--success); opacity: 0.8"></i>
+            <div class="stat-card">
+                <div><div id="replied-count" class="stat-number" style="color: var(--success)">0</div><div class="text-muted">تم الرد (اليوم)</div></div>
+                <i class="fas fa-check-circle fa-2x text-success"></i>
             </div>
         </div>
     </div>
 
-    <div id="tickets-container" class="row">
-        <div class="text-center text-white py-5">
-            <div class="spinner-border text-info" role="status"></div>
-            <p class="mt-3 fw-bold">جاري تحميل البيانات...</p>
+    <div class="row">
+        <div class="col-lg-8 mb-4">
+            <h5 class="text-white mb-3 border-bottom pb-2 border-secondary"><i class="fas fa-inbox text-primary me-2"></i> الوارد (يحتاج رد)</h5>
+            <div id="incoming-tickets">
+                <div class="text-center text-white py-5"><div class="spinner-border text-info"></div></div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <h5 class="text-white mb-3 border-bottom pb-2 border-secondary"><i class="fas fa-history text-success me-2"></i> تم الانتهاء (آخر 24 ساعة)</h5>
+            <div id="replied-tickets">
+                </div>
         </div>
     </div>
 </div>
 
 <div class="modal fade" id="replyModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalTitle">رد على الطالب</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p class="text-muted mb-2">ردود سريعة:</p>
                 <div class="mb-3">
                     <span class="quick-reply-btn" onclick="fillReply('تم تفعيل المحاضرة بنجاح، بالتوفيق! ✅')">تم التفعيل ✅</span>
-                    <span class="quick-reply-btn" onclick="fillReply('الكود غير صحيح، يرجى التأكد وإعادة المحاولة ❌')">كود خطأ ❌</span>
+                    <span class="quick-reply-btn" onclick="fillReply('الكود غير صحيح، يرجى التأكد ❌')">كود خطأ ❌</span>
                     <span class="quick-reply-btn" onclick="fillReply('تم حل المشكلة، جرب الآن 🔄')">تم الحل 🔄</span>
-                    <span class="quick-reply-btn" onclick="fillReply('جاري مراجعة طلبك مع الإدارة التقنية ⏳')">جاري المراجعة ⏳</span>
+                    <span class="quick-reply-btn" onclick="fillReply('جاري مراجعة طلبك ⏳')">جاري المراجعة ⏳</span>
                 </div>
-                
-                <textarea id="reply-text" class="form-control" rows="4" placeholder="اكتب ردك هنا..."></textarea>
+                <textarea id="reply-text" class="form-control" rows="6" style="font-size: 1.1rem;" placeholder="اكتب ردك هنا..."></textarea>
                 <input type="hidden" id="current-ticket-id">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                <button type="button" class="btn btn-primary fw-bold" onclick="submitReply()">إرسال الرد 🚀</button>
+                <button type="button" class="btn btn-primary fw-bold px-4" onclick="submitReply()">إرسال الرد 🚀</button>
             </div>
         </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -322,20 +253,19 @@
     const notificationSound = document.getElementById('notification-sound');
     let isFirstLoad = true; 
 
-    const ticketsContainer = document.getElementById('tickets-container');
-    const searchInput = document.getElementById('search-input');
+    const incomingContainer = document.getElementById('incoming-tickets');
+    const repliedContainer = document.getElementById('replied-tickets');
     
     const replyModal = new bootstrap.Modal(document.getElementById('replyModal'));
     const replyText = document.getElementById('reply-text');
     const currentTicketIdInput = document.getElementById('current-ticket-id');
     const modalTitle = document.getElementById('modalTitle');
 
-    searchInput.addEventListener('keyup', (e) => {
+    // بحث
+    document.getElementById('search-input').addEventListener('keyup', (e) => {
         const term = e.target.value.toLowerCase();
-        const cards = document.querySelectorAll('.ticket-col');
-        cards.forEach(card => {
-            const text = card.innerText.toLowerCase();
-            card.style.display = text.includes(term) ? 'block' : 'none';
+        document.querySelectorAll('.ticket-item').forEach(card => {
+            card.style.display = card.innerText.toLowerCase().includes(term) ? 'block' : 'none';
         });
     });
 
@@ -346,27 +276,18 @@
         replyModal.show();
     }
 
-    window.fillReply = (text) => {
-        replyText.value = text;
-    }
+    window.fillReply = (text) => { replyText.value = text; }
 
     window.submitReply = () => {
         const id = currentTicketIdInput.value;
         const reply = replyText.value;
-        
-        if (!reply) { alert("اكتب رد الأول يا هندسة!"); return; }
+        if (!reply) { alert("اكتب رد الأول!"); return; }
 
-        const ticketRef = ref(db, 'support_tickets/' + id);
-        update(ticketRef, {
+        update(ref(db, 'support_tickets/' + id), {
             status: 'replied',
             adminReply: reply,
             repliedAt: Date.now() 
-        }).then(() => {
-            replyModal.hide();
-        }).catch((error) => {
-            console.error(error);
-            alert("حصل خطأ في الإرسال");
-        });
+        }).then(() => { replyModal.hide(); });
     }
 
     const ticketsRef = ref(db, 'support_tickets');
@@ -374,106 +295,102 @@
     onValue(ticketsRef, (snapshot) => {
         const data = snapshot.val();
         
-        if (!isFirstLoad && data) {
-            notificationSound.play().catch(e => console.log("Sound interaction needed"));
-        }
+        if (!isFirstLoad && data) notificationSound.play().catch(e=>{});
         isFirstLoad = false;
 
-        ticketsContainer.innerHTML = '';
-        let pending = 0, replied = 0, overdue = 0;
+        incomingContainer.innerHTML = '';
+        repliedContainer.innerHTML = '';
+        
+        let pending = 0, repliedCount = 0, overdue = 0;
 
         if (!data) {
-            ticketsContainer.innerHTML = `
-                <div class="col-12 text-center" style="padding: 50px; color: #fff; opacity: 0.8;">
-                    <i class="fas fa-check-double fa-4x mb-3" style="color: var(--success);"></i>
-                    <h3>عاش يا رجاله! مفيش رسايل تانية 🎉</h3>
-                </div>`;
-            updateStats(0, 0, 0);
+            incomingContainer.innerHTML = `<div class="text-center text-muted py-5"><h3>لا توجد رسائل جديدة 🎉</h3></div>`;
             return;
         }
 
         let ticketsArray = [];
-        for (let id in data) {
-            ticketsArray.push({ id, ...data[id] });
-        }
+        for (let id in data) ticketsArray.push({ id, ...data[id] });
 
+        // ترتيب: الأحدث أولاً
         ticketsArray.sort((a, b) => {
-            let timeA = a.createdAt || 0;
-            let timeB = b.createdAt || 0;
-            if (typeof timeA === 'object' && timeA.seconds) timeA = timeA.seconds * 1000;
-            if (typeof timeB === 'object' && timeB.seconds) timeB = timeB.seconds * 1000;
-            return timeB - timeA; 
+            let tA = a.createdAt?.seconds ? a.createdAt.seconds * 1000 : a.createdAt || 0;
+            let tB = b.createdAt?.seconds ? b.createdAt.seconds * 1000 : b.createdAt || 0;
+            return tB - tA; 
         });
+
+        const now = Date.now();
+        const oneDay = 24 * 60 * 60 * 1000; // 24 ساعة بالميلي ثانية
 
         ticketsArray.forEach((ticket) => {
-            const ticketId = ticket.id;
-            const isCompleted = ticket.status === 'completed' || ticket.status === 'replied';
-
-            let timeBadgeHTML = '';
-            let cardClass = '';
+            const isReplied = ticket.status === 'replied';
+            let createdTime = ticket.createdAt?.seconds ? ticket.createdAt.seconds * 1000 : ticket.createdAt;
             
-            if (!isCompleted && ticket.createdAt) {
-                let createdTime = ticket.createdAt;
-                if (typeof createdTime === 'object' && createdTime.seconds) createdTime = createdTime.seconds * 1000;
-                
-                const createdDate = new Date(createdTime);
-                const diffHours = (new Date() - createdDate) / (1000 * 60 * 60);
-                const hoursLeft = 24 - diffHours;
+            // لوجيك الوقت
+            const diffHours = (now - createdTime) / (1000 * 60 * 60);
+            
+            if (!isReplied) {
+                // --- عرض الرسائل الواردة (القائمة الكبيرة) ---
+                pending++;
+                let badgeHTML = '';
+                let cardClass = '';
 
                 if (diffHours >= 24) {
-                    overdue++; pending++;
-                    cardClass = 'card-danger';
-                    timeBadgeHTML = `<span class="time-badge time-danger">متأخر ${Math.floor(diffHours)}س</span>`;
-                } else if (diffHours >= 20) {
-                    pending++;
-                    cardClass = 'card-danger';
-                    timeBadgeHTML = `<span class="time-badge time-danger">باقي ${Math.floor(hoursLeft)}س</span>`;
+                    overdue++; cardClass = 'card-danger';
+                    badgeHTML = `<span class="time-badge time-danger">متأخر ${Math.floor(diffHours)}س</span>`;
                 } else {
-                    pending++;
-                    timeBadgeHTML = `<span class="time-badge time-safe">جديد (${Math.floor(hoursLeft)}س)</span>`;
+                    badgeHTML = `<span class="time-badge time-safe">جديد (${Math.floor(24 - diffHours)}س باقي)</span>`;
                 }
-            } else if (isCompleted) {
-                replied++;
-                timeBadgeHTML = `<span class="badge bg-success">تم الحل</span>`;
-            }
 
-            const html = `
-                <div class="col-lg-4 col-md-6 ticket-col" style="${isCompleted ? 'opacity:0.6' : ''}">
-                    <div class="ticket-card ${cardClass}">
+                const html = `
+                    <div class="ticket-item ticket-card-large ${cardClass}">
                         <div class="ticket-header">
-                            <span class="text-white" style="font-family:monospace">#${ticketId.slice(-4)}</span>
-                            ${timeBadgeHTML}
+                            <span class="text-white" style="font-family:monospace; opacity:0.7">#${ticket.id.slice(-4)}</span>
+                            ${badgeHTML}
                         </div>
-                        
                         <div class="ticket-body">
-                            <span class="ticket-subject">${ticket.subject || 'بدون عنوان'}</span>
+                            <h4 class="ticket-subject">${ticket.subject || 'بدون عنوان'}</h4>
                             <div class="ticket-msg">${ticket.message || '...'}</div>
                             
-                            <div class="d-flex justify-content-between" style="font-size:0.85rem; color: #ccc;">
-                                <span><i class="fas fa-user ms-1"></i> ${ticket.studentName || 'طالب'}</span>
-                                <span style="font-family:monospace; color: var(--primary)"><i class="fas fa-code"></i> ${ticket.studentCode || ''}</span>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div>
+                                    <h5 class="m-0"><i class="fas fa-user-circle me-2 text-info"></i> ${ticket.studentName || 'طالب'}</h5>
+                                    <small class="text-muted ms-4" style="font-family:monospace">${ticket.studentCode || ''}</small>
+                                </div>
                             </div>
                         </div>
-
-                        ${!isCompleted ? `
-                        <button class="btn-action" onclick="openReplyModal('${ticketId}', '${ticket.studentName || 'الطالب'}')">
-                            رد سريع <i class="fas fa-comment-dots ms-2"></i>
+                        <button class="btn-action" onclick="openReplyModal('${ticket.id}', '${ticket.studentName}')">
+                            رد على الطالب <i class="fas fa-paper-plane ms-2"></i>
                         </button>
-                        ` : ''}
                     </div>
-                </div>
-            `;
-            ticketsContainer.innerHTML += html;
+                `;
+                incomingContainer.innerHTML += html;
+
+            } else {
+                // --- عرض الرسائل المردود عليها (القائمة الجانبية) ---
+                // الشرط: تظهر فقط لو مر عليها أقل من 24 ساعة من وقت الرد
+                const repliedTime = ticket.repliedAt || ticket.createdAt; 
+                if ((now - repliedTime) < oneDay) {
+                    repliedCount++;
+                    const doneHtml = `
+                        <div class="ticket-item ticket-card-done">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="text-white">${ticket.studentName}</h6>
+                                <span class="badge bg-success" style="font-size:0.7rem">تم الرد</span>
+                            </div>
+                            <p class="text-truncate">${ticket.message}</p>
+                            <small class="text-muted" style="font-size:0.7rem">ردك: ${ticket.adminReply ? ticket.adminReply.substring(0, 30) : '...'}...</small>
+                        </div>
+                    `;
+                    repliedContainer.innerHTML += doneHtml;
+                }
+            }
         });
 
-        updateStats(pending, replied, overdue);
+        // تحديث العدادات
+        document.getElementById('pending-count').innerText = pending;
+        document.getElementById('replied-count').innerText = repliedCount;
+        document.getElementById('overdue-count').innerText = overdue;
     });
-
-    function updateStats(p, r, o) {
-        document.getElementById('pending-count').innerText = p;
-        document.getElementById('replied-count').innerText = r;
-        document.getElementById('overdue-count').innerText = o;
-    }
 </script>
 
 </body>
