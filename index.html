@@ -304,20 +304,18 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    // استدعاء مكتبات الـ Realtime Database
     import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDH3cy-jkDphnPGzHUwd4rd9ogZDY7uUgM",
       authDomain: "quest-full.firebaseapp.com",
-      databaseURL: "https://quest-full-default-rtdb.firebaseio.com", // الرابط الخاص بك
+      databaseURL: "https://quest-full-default-rtdb.firebaseio.com", 
       projectId: "quest-full",
       storageBucket: "quest-full.firebasestorage.app",
       messagingSenderId: "501161882802",
       appId: "1:501161882802:web:08d6230eb09741a5c8c5ab"
     };
 
-    // تهيئة التطبيق والداتابيز
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     
@@ -332,7 +330,6 @@
     const currentTicketIdInput = document.getElementById('current-ticket-id');
     const modalTitle = document.getElementById('modalTitle');
 
-    // البحث
     searchInput.addEventListener('keyup', (e) => {
         const term = e.target.value.toLowerCase();
         const cards = document.querySelectorAll('.ticket-col');
@@ -353,19 +350,17 @@
         replyText.value = text;
     }
 
-    // إرسال الرد وتحديث الحالة في Realtime Database
     window.submitReply = () => {
         const id = currentTicketIdInput.value;
         const reply = replyText.value;
         
         if (!reply) { alert("اكتب رد الأول يا هندسة!"); return; }
 
-        // التحديث باستخدام update بدلاً من updateDoc
-        const ticketRef = ref(db, 'tickets/' + id);
+        const ticketRef = ref(db, 'support_tickets/' + id);
         update(ticketRef, {
             status: 'replied',
             adminReply: reply,
-            repliedAt: Date.now() // استخدام التوقيت الحالي
+            repliedAt: Date.now() 
         }).then(() => {
             replyModal.hide();
         }).catch((error) => {
@@ -374,15 +369,12 @@
         });
     }
 
-    // الاستماع للبيانات من جدول 'tickets'
-    const ticketsRef = ref(db, 'tickets');
+    const ticketsRef = ref(db, 'support_tickets');
 
     onValue(ticketsRef, (snapshot) => {
         const data = snapshot.val();
         
-        // تشغيل صوت التنبيه عند التحديث (ما عدا أول مرة)
         if (!isFirstLoad && data) {
-             // هنا ممكن تعمل لوجيك معقد عشان تعرف لو فيه جديد بس، للتبسيط شغلناها مع أي تحديث
             notificationSound.play().catch(e => console.log("Sound interaction needed"));
         }
         isFirstLoad = false;
@@ -400,21 +392,16 @@
             return;
         }
 
-        // تحويل الداتا من Object إلى Array عشان نعرف نرتبها
         let ticketsArray = [];
         for (let id in data) {
             ticketsArray.push({ id, ...data[id] });
         }
 
-        // ترتيب حسب الوقت (الأحدث أولاً)
         ticketsArray.sort((a, b) => {
-            // نتأكد إن createdAt موجود، لو مش موجود نعتبره 0
             let timeA = a.createdAt || 0;
             let timeB = b.createdAt || 0;
-            // لو التايم ستامب جاي object زي Firestore نحوله
             if (typeof timeA === 'object' && timeA.seconds) timeA = timeA.seconds * 1000;
             if (typeof timeB === 'object' && timeB.seconds) timeB = timeB.seconds * 1000;
-            
             return timeB - timeA; 
         });
 
@@ -427,7 +414,6 @@
             
             if (!isCompleted && ticket.createdAt) {
                 let createdTime = ticket.createdAt;
-                // معالجة صيغ الوقت المختلفة
                 if (typeof createdTime === 'object' && createdTime.seconds) createdTime = createdTime.seconds * 1000;
                 
                 const createdDate = new Date(createdTime);
